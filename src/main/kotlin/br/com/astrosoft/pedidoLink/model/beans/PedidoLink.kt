@@ -34,21 +34,26 @@ data class PedidoLink(val loja: Int,
   }
   
   companion object {
-    val storeno
-      get() = UserSaci.findUser(AppConfig.userSaci?.login)?.storeno ?: 0
+    val storeno: Int by lazy {
+      UserSaci.findUser(AppConfig.userSaci?.login)?.storeno ?: 0
+    }
   
     fun listaCaixaMovimentoGeral(): List<PedidoLink> {
-      return saci.listaPedidoLink(storeno).filter {
+      val list = saci.listaPedidoLink(storeno)
+      return list.filter {
         it.notaFiscal == "" && it.dataLink == null
       }
     }
+  
     fun listaCaixaMovimentoPendente(): List<PedidoLink> {
-      return saci.listaPedidoLink(storeno).filter {
+      val list = saci.listaPedidoLink(storeno)
+      return list.filter {
         it.dataLink != null
       }
     }
     fun listaCaixaMovimentoFaturado(): List<PedidoLink> {
-      return saci.listaPedidoLink(storeno).filter {
+      val list = saci.listaPedidoLink(storeno)
+      return list.filter {
         it.notaFiscal != ""
       }
     }

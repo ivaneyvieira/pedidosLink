@@ -17,6 +17,8 @@ import com.vaadin.flow.component.ComponentEvent
 import com.vaadin.flow.component.ComponentEventListener
 import com.vaadin.flow.component.DomEvent
 import com.vaadin.flow.component.HasComponents
+import com.vaadin.flow.component.button.Button
+import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.charts.model.style.SolidColor
 import com.vaadin.flow.component.datepicker.DatePicker
 import com.vaadin.flow.component.datepicker.DatePicker.DatePickerI18n
@@ -32,7 +34,6 @@ import com.vaadin.flow.component.tabs.Tabs.SelectedChangeEvent
 import com.vaadin.flow.data.provider.ListDataProvider
 import com.vaadin.flow.data.renderer.LocalDateRenderer
 import com.vaadin.flow.data.renderer.NumberRenderer
-import com.vaadin.flow.data.renderer.TemplateRenderer
 import com.vaadin.flow.data.renderer.TextRenderer
 import com.vaadin.flow.router.AfterNavigationEvent
 import com.vaadin.flow.router.AfterNavigationObserver
@@ -326,4 +327,14 @@ fun <T> ListDataProvider<T>.updateItens(itens: List<T>) {
   this.items.clear()
   this.items.addAll(itens.sortedBy {it.hashCode()})
   this.refreshAll()
+}
+
+fun <T> TabSheet.tabGrid(label: String, painelGrid: PainelGrid<T>) = tab {
+  painelGrid
+}.apply {
+  val button = Button(label) {
+    painelGrid.blockUpdate()
+  }
+  button.addThemeVariants(ButtonVariant.LUMO_SMALL)
+  this.addComponentAsFirst(button)
 }

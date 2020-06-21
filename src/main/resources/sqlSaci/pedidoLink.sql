@@ -28,6 +28,6 @@ FROM sqldados.eord          AS P
 WHERE PM.sname LIKE '%LINK%'
   AND P.date >= 20200608
   AND P.status <> 5
-  AND (P.storeno = :storeno)
+  AND (P.storeno = :storeno OR :storeno = 0)
 GROUP BY P.ordno, P.storeno
 
