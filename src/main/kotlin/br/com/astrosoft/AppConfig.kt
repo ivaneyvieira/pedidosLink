@@ -20,5 +20,5 @@ object AppConfig {
   val userSaci
     get() = userDetails?.user
   
-  fun findUser(username : String?) : IUser? = saci.findUser(username)
+  fun findUser(username : String?) : IUser? = saci.findUser(username).firstOrNull()
 }

@@ -54,6 +54,16 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
     }
     updateGridGeral()
   }
+  
+  fun desmarcaPedido() = exec {
+    val itens =
+      view.itensSelecionadoPendente()
+        .ifEmpty {fail("Nenhum item selecionado")}
+    itens.forEach {pedidoLink: PedidoLink ->
+      pedidoLink.marcaHorario(null, null)
+    }
+    updateGridPendente()
+  }
 }
 
 interface IFiltroGeral {
@@ -77,6 +87,7 @@ interface IPedidoLinkView: IView {
   fun updateGridFaturado(itens: List<PedidoLink>)
   
   fun itensSelecionadoGeral(): List<PedidoLink>
+  fun itensSelecionadoPendente(): List<PedidoLink>
   
   val filtroGeral: IFiltroGeral
   val filtroPendente: IFiltroPendente

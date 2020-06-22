@@ -31,7 +31,7 @@ class UserSaci : IUser {
   
   fun bitAcesso(): Int {
     val ativoSum = if(ativo) 2.pow(9) else 0
-    val bits = saci.findUser(login)?.bitAcesso ?: 0
+    val bits = findUser(login)?.bitAcesso ?: 0
     return ativoSum or bits
   }
   
@@ -46,7 +46,7 @@ class UserSaci : IUser {
     }
     
     fun findUser(login: String?): UserSaci? {
-      return saci.findUser(login)
+      return saci.findUser(login).firstOrNull()
     }
   }
   

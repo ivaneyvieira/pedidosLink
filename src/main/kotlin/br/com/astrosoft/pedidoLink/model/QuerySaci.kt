@@ -8,13 +8,12 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 class QuerySaci: QueryDB(driver, url, username, password) {
-  fun findUser(login: String?): UserSaci? {
-    login ?: return null
+  fun findUser(login: String?): List<UserSaci> {
+    login ?: return emptyList()
     val sql = "/sqlSaci/userSenha.sql"
     return query(sql, UserSaci::class) {
       addParameter("login", login)
-    }.firstOrNull()
-      ?.initVars()
+    }.map {it.initVars()}
   }
   
   fun findAllUser(): List<UserSaci> {
@@ -42,9 +41,9 @@ class QuerySaci: QueryDB(driver, url, username, password) {
     }
   }
   
-  fun marcaLink(loja : Int, numPedido: Int, data: LocalDate?, hora : LocalTime?){
-  val sql = "/sqlSaci/marcaLink.sql"
-    script(sql){
+  fun marcaLink(loja: Int, numPedido: Int, data: LocalDate?, hora: LocalTime?) {
+    val sql = "/sqlSaci/marcaLink.sql"
+    script(sql) {
       addParameter("storeno", loja)
       addParameter("ordno", numPedido)
       addParameter("data", data)
