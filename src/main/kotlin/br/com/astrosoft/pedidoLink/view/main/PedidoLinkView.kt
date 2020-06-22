@@ -53,14 +53,8 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
     viewModel.desmarcaPedido()
   }
   
-  private fun marcaPedido() {
-    val formLink = FormLink()
-    formLink.binder.bean = CardLink(LocalDate.now(), LocalTime.now())
-    if(itensSelecionadoGeral().isEmpty()) showError("Nenhum pedido foi selecionado")
-    else showForm("Dados do Link", formLink) {
-      val bean = formLink.binder.bean
-      viewModel.marcaPedido(bean)
-    }
+  private fun marcaPedido(pedido: PedidoLink) {
+    viewModel.marcaPedido(pedido)
   }
   
   override fun itensSelecionadoGeral(): List<PedidoLink> {

@@ -1,5 +1,6 @@
 package br.com.astrosoft.pedidoLink.view.main
 
+import br.com.astrosoft.framework.view.addColumnDouble
 import br.com.astrosoft.framework.view.addColumnInt
 import br.com.astrosoft.framework.view.addColumnLocalDate
 import br.com.astrosoft.framework.view.addColumnLocalTime
@@ -73,6 +74,41 @@ fun Grid<PedidoLink>.colUsername() = addColumnString(PedidoLink::username) {
 
 fun Grid<PedidoLink>.colObs() = addColumnString(PedidoLink::obs) {
   setHeader("Obs")
+  width = "10%"
+}
+
+fun Grid<PedidoLink>.colNota() = addColumnString(PedidoLink::nota) {
+  setHeader("LJ")
+  width = "10%"
+}
+
+fun Grid<PedidoLink>.colValorFrete() = addColumnDouble(PedidoLink::valorFrete) {
+  setHeader("Frete")
+  width = "10%"
+}
+
+fun Grid<PedidoLink>.colTotal() = addColumnDouble(PedidoLink::total) {
+  setHeader("Total")
+  width = "10%"
+}
+
+fun Grid<PedidoLink>.colCartao() = addColumnString(PedidoLink::cartao) {
+  setHeader("Cartão")
+  width = "10%"
+}
+
+fun Grid<PedidoLink>.colWhatsapp() = addColumnString(PedidoLink::whatsapp) {
+  setHeader("Whatsapp")
+  width = "10%"
+}
+
+fun Grid<PedidoLink>.colCliente() = addColumnString(PedidoLink::cliente) {
+  setHeader("Cliente")
+  width = "10%"
+}
+
+fun Grid<PedidoLink>.colVendedor() = addColumnString(PedidoLink::vendedor) {
+  setHeader("Vendedor")
   width = "10%"
 }
 

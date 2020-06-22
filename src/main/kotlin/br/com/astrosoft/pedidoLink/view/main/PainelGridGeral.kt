@@ -3,32 +3,45 @@ package br.com.astrosoft.pedidoLink.view.main
 import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroGeral
-import com.github.mvysny.karibudsl.v10.button
-import com.github.mvysny.karibudsl.v10.isMultiSelect
 import com.github.mvysny.karibudsl.v10.onLeftClick
+import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.datepicker.DatePicker
 import com.vaadin.flow.component.grid.Grid
-import com.vaadin.flow.component.grid.Grid.SelectionMode
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.IntegerField
+import org.vaadin.olli.ClipboardHelper
 import java.time.LocalDate
 
-class PainelGridGeral(val marcaPedido: () -> Unit, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(blockUpdate) {
+class PainelGridGeral(val marcaPedido: (PedidoLink) -> Unit, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(blockUpdate) {
   override fun Grid<PedidoLink>.gridConfig() {
-    setSelectionMode(SelectionMode.MULTI)
+    //setSelectionMode(SelectionMode.MULTI)
+    addComponentColumn {pedido->
+      val button = Button().apply {
+        icon = VaadinIcon.CHECK.create()
+        addThemeVariants(LUMO_SMALL)
+        onLeftClick {marcaPedido(pedido)}
+      }
+      ClipboardHelper("${pedido.nota} ${pedido.numPedido}", button)
+    }
     colLoja()
     colnumPedido()
     colDataPedido()
     colHoraPedido()
+    colValorFrete()
+    colTotal()
     colMetodo()
+    colCartao()
+    colWhatsapp()
+    colUsername()
+    colCliente()
+    colVendedor()
     //colNotaFiscal()
     //colDataNota()
     //colHoraNota()
     //colDataLink()
     //colHoraLink()
-    colUsername()
-    colObs()
+    //    colObs()
   }
   
   override fun filterBar() = FilterBarGeral()
@@ -38,11 +51,11 @@ class PainelGridGeral(val marcaPedido: () -> Unit, blockUpdate: () -> Unit): Pai
     lateinit var edtData: DatePicker
     
     override fun FilterBar.contentBlock() {
-      button("Marca Link") {
-        icon = VaadinIcon.CHECK.create()
-        addThemeVariants(LUMO_SMALL)
-        onLeftClick {marcaPedido()}
-      }
+      // button("Marca Link") {
+      //   icon = VaadinIcon.CHECK.create()
+      //   addThemeVariants(LUMO_SMALL)
+      //   onLeftClick {marcaPedido()}
+      //  }
       edtPedido = edtPedido() {
         addValueChangeListener {blockUpdate()}
       }

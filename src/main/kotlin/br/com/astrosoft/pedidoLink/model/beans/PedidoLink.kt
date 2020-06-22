@@ -17,7 +17,14 @@ data class PedidoLink(val loja: Int,
                       val obs: String,
                       val username: String,
                       val dataLink: LocalDate?,
-                      val horaLink: LocalTime?) {
+                      val horaLink: LocalTime?,
+                      val nota: String,
+                      val valorFrete: Double?,
+                      val total: Double?,
+                      val cartao: String?,
+                      val whatsapp: String?,
+                      val cliente: String?,
+                      val vendedor: String?) {
   val notaFiscal: String
     get() = numeroNota(nfnoNota, nfseNota)
   
@@ -29,7 +36,7 @@ data class PedidoLink(val loja: Int,
     }
   }
   
-  fun marcaHorario(data: LocalDate?, hora : LocalTime?) {
+  fun marcaHorario(data: LocalDate?, hora: LocalTime?) {
     saci.marcaLink(loja, numPedido, data, hora)
   }
   
@@ -37,20 +44,21 @@ data class PedidoLink(val loja: Int,
     val storeno: Int by lazy {
       UserSaci.findUser(AppConfig.userSaci?.login)?.storeno ?: 0
     }
-  
+    
     fun listaCaixaMovimentoGeral(): List<PedidoLink> {
       val list = saci.listaPedidoLink(storeno)
       return list.filter {
         it.notaFiscal == "" && it.dataLink == null
       }
     }
-  
+    
     fun listaCaixaMovimentoPendente(): List<PedidoLink> {
       val list = saci.listaPedidoLink(storeno)
       return list.filter {
         it.dataLink != null
       }
     }
+    
     fun listaCaixaMovimentoFaturado(): List<PedidoLink> {
       val list = saci.listaPedidoLink(storeno)
       return list.filter {
