@@ -3,13 +3,19 @@ package br.com.astrosoft.pedidoLink.view.main
 import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroPendente
+import com.github.mvysny.karibudsl.v10.button
+import com.github.mvysny.karibudsl.v10.onLeftClick
+import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.datepicker.DatePicker
 import com.vaadin.flow.component.grid.Grid
+import com.vaadin.flow.component.grid.Grid.SelectionMode
+import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.IntegerField
 import java.time.LocalDate
 
-class PainelGridPendente(blockUpdate: () -> Unit): PainelGrid<PedidoLink>(blockUpdate) {
+class PainelGridPendente(val desmarcaPedido: () -> Unit, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(blockUpdate) {
   override fun Grid<PedidoLink>.gridConfig() {
+    setSelectionMode(SelectionMode.MULTI)
     colLoja()
     colnumPedido()
     colDataPedido()
@@ -31,6 +37,11 @@ class PainelGridPendente(blockUpdate: () -> Unit): PainelGrid<PedidoLink>(blockU
     lateinit var edtData: DatePicker
     
     override fun FilterBar.contentBlock() {
+      button("Desmarca Link") {
+        icon = VaadinIcon.CHECK.create()
+        addThemeVariants(LUMO_SMALL)
+        onLeftClick {desmarcaPedido()}
+      }
       edtPedido = edtPedido() {
         addValueChangeListener {blockUpdate()}
       }

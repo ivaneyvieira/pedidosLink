@@ -28,7 +28,6 @@ import java.time.LocalTime
 @PageTitle(AppConfig.title)
 @HtmlImport("frontend://styles/shared-styles.html")
 class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
-  private lateinit var formLink: FormLink
   private val gridGeral: PainelGridGeral
   private val gridPendente: PainelGridPendente
   private val gridFaturado: PainelGridFaturado
@@ -38,7 +37,7 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
   
   init {
     gridGeral = PainelGridGeral(::marcaPedido) {viewModel.updateGridGeral()}
-    gridPendente = PainelGridPendente {viewModel.updateGridPendente()}
+    gridPendente = PainelGridPendente(::desmarcaPedido) {viewModel.updateGridPendente()}
     gridFaturado = PainelGridFaturado {viewModel.updateGridFaturado()}
     tabSheet {
       setSizeFull()
@@ -49,8 +48,13 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
     viewModel.updateGridGeral()
   }
   
+  private fun desmarcaPedido() {
+    if(itensSelecionadoPendente().isEmpty()) showError("Nenhum pedido foi selecionado")
+    viewModel.desmarcaPedido()
+  }
+  
   private fun marcaPedido() {
-    formLink = FormLink()
+    val formLink = FormLink()
     formLink.binder.bean = CardLink(LocalDate.now(), LocalTime.now())
     if(itensSelecionadoGeral().isEmpty()) showError("Nenhum pedido foi selecionado")
     else showForm("Dados do Link", formLink) {
@@ -63,8 +67,8 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
     return gridGeral.selectedItems()
   }
   
-  private fun confirmMarca() {
-    TODO("Not yet implemented")
+  override fun itensSelecionadoPendente(): List<PedidoLink> {
+    return gridPendente.selectedItems()
   }
   
   override fun updateGridGeral(itens: List<PedidoLink>) {
