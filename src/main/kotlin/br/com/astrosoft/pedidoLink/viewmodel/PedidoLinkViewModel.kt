@@ -44,14 +44,8 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
       }
   }
   
-  fun marcaPedido(cardLink: CardLink?) = exec {
-    cardLink ?: return@exec
-    val itens =
-      view.itensSelecionadoGeral()
-        .ifEmpty {fail("Nenhum item selecionado")}
-    itens.forEach {pedidoLink: PedidoLink ->
-      pedidoLink.marcaHorario(cardLink.data, cardLink.hora)
-    }
+  fun marcaPedido(pedido: PedidoLink?) = exec {
+    pedido?.marcaHorario(LocalDate.now(), LocalTime.now())
     updateGridGeral()
   }
   
