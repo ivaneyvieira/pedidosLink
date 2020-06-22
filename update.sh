@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 git pull
-./gradlew clean build
+./gradlew
 
 docker-compose down
 docker-compose up -d
