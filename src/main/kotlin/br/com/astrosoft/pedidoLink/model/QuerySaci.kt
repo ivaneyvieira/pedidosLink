@@ -45,10 +45,10 @@ class QuerySaci: QueryDB(driver, url, username, password) {
   fun marcaLink(loja : Int, numPedido: Int, data: LocalDate?, hora : LocalTime?){
   val sql = "/sqlSaci/marcaLink.sql"
     script(sql){
-      addOptionalParameter("storeno", loja)
-      addOptionalParameter("ordno", numPedido)
-      addOptionalParameter("data", data)
-      addOptionalParameter("hora", hora)
+      addParameter("storeno", loja)
+      addParameter("ordno", numPedido)
+      addParameter("data", data)
+      addParameter("hora", hora)
     }
   }
   
