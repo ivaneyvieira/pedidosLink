@@ -55,7 +55,7 @@ data class PedidoLink(val loja: Int,
     fun listaCaixaMovimentoPendente(): List<PedidoLink> {
       val list = saci.listaPedidoLink(storeno)
       return list.filter {
-        it.dataLink != null
+        it.dataLink != null && it.notaFiscal == ""
       }
     }
     

@@ -11,7 +11,7 @@ SELECT 'Link de pagamento loja ENGECOPI Ped MF'                                 
        IF(eord.other = 0, MID(eordrk.remarks__480, 7, 10), eord.other) /
        100                                                                                        AS frete,
        MID(eordrk.remarks__480, 160, 10)                                                          AS CARTAO,
-       eord.amount + IF(eord.other = 0, (MID(eordrk.remarks__480, 7, 2) * 100), eord.other) /
+       (eord.amount + IF(eord.other = 0, (MID(eordrk.remarks__480, 7, 2) * 100), eord.other)) /
 		     100                                                                          AS total,
        CONCAT(paym.no, '-', paym.sname)                                                           AS MET,
        LPAD(emp.sname, 10, ' ')                                                                   AS VENDEDOR,
