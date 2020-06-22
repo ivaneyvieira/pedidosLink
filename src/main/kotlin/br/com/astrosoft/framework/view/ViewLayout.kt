@@ -22,6 +22,7 @@ import com.vaadin.flow.component.button.ButtonVariant
 import com.vaadin.flow.component.charts.model.style.SolidColor
 import com.vaadin.flow.component.datepicker.DatePicker
 import com.vaadin.flow.component.datepicker.DatePicker.DatePickerI18n
+import com.vaadin.flow.component.formlayout.FormLayout
 import com.vaadin.flow.component.grid.ColumnTextAlign.CENTER
 import com.vaadin.flow.component.grid.ColumnTextAlign.END
 import com.vaadin.flow.component.grid.ColumnTextAlign.START
@@ -42,7 +43,8 @@ import com.vaadin.flow.router.BeforeEnterObserver
 import com.vaadin.flow.router.BeforeLeaveEvent
 import com.vaadin.flow.router.BeforeLeaveObserver
 import com.vaadin.flow.shared.Registration
-import org.claspina.confirmdialog.ButtonOption
+import org.claspina.confirmdialog.ButtonOption.*
+import org.claspina.confirmdialog.ButtonType.OK
 import org.claspina.confirmdialog.ConfirmDialog
 import java.sql.Time
 import java.text.DecimalFormat
@@ -82,6 +84,15 @@ abstract class ViewLayout<VM: ViewModel<*>>: VerticalLayout(), IView, BeforeLeav
       .open()
   }
   
+  fun showForm(caption: String, form: FormLayout, runConfirm : (() -> Unit)) {
+    ConfirmDialog.create()
+      .withCaption(caption)
+      .withMessage(form)
+      .withButton(OK, Runnable {runConfirm()}, caption("Confirma"), closeOnClick(true))
+      .withCancelButton(caption("Cancela"))
+      .open()
+  }
+  
   fun showQuestion(msg: String, execYes: () -> Unit) {
     showQuestion(msg, execYes, {})
   }
@@ -92,8 +103,8 @@ abstract class ViewLayout<VM: ViewModel<*>>: VerticalLayout(), IView, BeforeLeav
       .withMessage(msg)
       .withYesButton(Runnable {
         execYes()
-      }, ButtonOption.caption("Sim"))
-      .withNoButton(Runnable {execNo()}, ButtonOption.caption("Não"))
+      }, caption("Sim"))
+      .withNoButton(Runnable {execNo()}, caption("Não"))
       .open()
   }
   
@@ -151,7 +162,7 @@ fun <T> (@VaadinDsl Grid<T>).addColumnBool(property: KProperty1<T, Boolean?>,
     else VaadinIcon.CIRCLE_THIN.create()
   }
   column.setComparator {o1, o2 ->
-    val value1 = property.get(o1) ?:false
+    val value1 = property.get(o1) ?: false
     val value2 = property.get(o2) ?: false
     value1.compareTo(value2)
   }

@@ -31,5 +31,9 @@ abstract class PainelGrid<T>(val blockUpdate: () -> Unit): VerticalLayout() {
   }
   
   protected abstract fun Grid<T>.gridConfig()
+  
+  fun selectedItems(): List<T> {
+    return grid.selectedItems.toList()
+  }
 }
 
