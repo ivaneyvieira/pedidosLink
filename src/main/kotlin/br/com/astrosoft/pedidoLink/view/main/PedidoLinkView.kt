@@ -8,6 +8,7 @@ import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
 import br.com.astrosoft.pedidoLink.view.layout.PedidoLinkLayout
 import br.com.astrosoft.pedidoLink.viewmodel.CardLink
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroFaturado
+import br.com.astrosoft.pedidoLink.viewmodel.IFiltroFinalizado
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroGeral
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroPendente
 import br.com.astrosoft.pedidoLink.viewmodel.IPedidoLinkView
@@ -31,6 +32,7 @@ import java.time.LocalTime
 class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
   private val gridGeral: PainelGridGeral
   private val gridPendente: PainelGridPendente
+  private val gridFinalizado: PainelGridFinalizado
   private val gridFaturado: PainelGridFaturado
   override val viewModel: PedidoLinkViewModel = PedidoLinkViewModel(this)
   
@@ -39,11 +41,13 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
   init {
     gridGeral = PainelGridGeral(::marcaPedido) {viewModel.updateGridGeral()}
     gridPendente = PainelGridPendente(::desmarcaPedido, ::uploadFile) {viewModel.updateGridPendente()}
+    gridFinalizado = PainelGridFinalizado() {viewModel.updateGridFinalizado()}
     gridFaturado = PainelGridFaturado {viewModel.updateGridFaturado()}
     tabSheet {
       setSizeFull()
       tabGrid(TAB_GERAL, gridGeral)
       tabGrid(TAB_PENDENTE, gridPendente)
+      tabGrid(TAB_FINALIZADO, gridFinalizado)
       tabGrid(TAB_FATURADO, gridFaturado)
     }
     viewModel.updateGridGeral()
@@ -78,6 +82,10 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
     gridPendente.updateGrid(itens)
   }
   
+  override fun updateGridFinalizado(itens: List<PedidoLink>) {
+    gridFinalizado.updateGrid(itens)
+  }
+  
   override fun updateGridFaturado(itens: List<PedidoLink>) {
     gridFaturado.updateGrid(itens)
   }
@@ -86,12 +94,15 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
     get() = gridGeral.filterBar as IFiltroGeral
   override val filtroPendente: IFiltroPendente
     get() = gridPendente.filterBar as IFiltroPendente
+  override val filtroFinalizado: IFiltroFinalizado
+    get() = gridFinalizado.filterBar as IFiltroFinalizado
   override val filtroFaturado: IFiltroFaturado
     get() = gridFaturado.filterBar as IFiltroFaturado
   
   companion object {
     const val TAB_GERAL: String = "Inserido"
     const val TAB_PENDENTE: String = "Pendente"
+    const val TAB_FINALIZADO: String = "Finalziado"
     const val TAB_FATURADO: String = "Faturado"
   }
 }

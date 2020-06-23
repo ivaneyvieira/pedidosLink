@@ -15,7 +15,7 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
   
   private fun listGeral(): List<PedidoLink> {
     val filtro = view.filtroGeral
-    return PedidoLink.listaCaixaMovimentoGeral()
+    return PedidoLink.listaGeral()
       .filter {
         (it.dataPedido == filtro.data() || filtro.data() == null) && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
       }
@@ -27,7 +27,19 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
   
   private fun listPendente(): List<PedidoLink> {
     val filtro = view.filtroPendente
-    return PedidoLink.listaCaixaMovimentoPendente()
+    return PedidoLink.listaPendente()
+      .filter {
+        (it.dataPedido == filtro.data() || filtro.data() == null) && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
+      }
+  }
+  
+  fun updateGridFinalizado() {
+    view.updateGridFinalizado(listFinalizado())
+  }
+  
+  private fun listFinalizado(): List<PedidoLink> {
+    val filtro = view.filtroFinalizado
+    return PedidoLink.listaFinalizado()
       .filter {
         (it.dataPedido == filtro.data() || filtro.data() == null) && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
       }
@@ -39,7 +51,7 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
   
   private fun listFaturado(): List<PedidoLink> {
     val filtro = view.filtroFaturado
-    return PedidoLink.listaCaixaMovimentoFaturado()
+    return PedidoLink.listaFaturado()
       .filter {
         (it.dataPedido == filtro.data() || filtro.data() == null) && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
       }
@@ -61,7 +73,8 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
   }
   
   fun uploadFile(inputStream: InputStream) {
-  
+    PedidoLink.uploadFile(inputStream)
+    updateGridPendente()
   }
 }
 
@@ -75,6 +88,11 @@ interface IFiltroPendente {
   fun data(): LocalDate?
 }
 
+interface IFiltroFinalizado {
+  fun numPedido(): Int
+  fun data(): LocalDate?
+}
+
 interface IFiltroFaturado {
   fun numPedido(): Int
   fun data(): LocalDate?
@@ -83,6 +101,7 @@ interface IFiltroFaturado {
 interface IPedidoLinkView: IView {
   fun updateGridGeral(itens: List<PedidoLink>)
   fun updateGridPendente(itens: List<PedidoLink>)
+  fun updateGridFinalizado(itens: List<PedidoLink>)
   fun updateGridFaturado(itens: List<PedidoLink>)
   
   fun itensSelecionadoGeral(): List<PedidoLink>
@@ -90,6 +109,7 @@ interface IPedidoLinkView: IView {
   
   val filtroGeral: IFiltroGeral
   val filtroPendente: IFiltroPendente
+  val filtroFinalizado: IFiltroFinalizado
   val filtroFaturado: IFiltroFaturado
 }
 
