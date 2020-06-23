@@ -67,8 +67,8 @@ class PainelGridPendente(val desmarcaPedido: () -> Unit,
       val buffer = MemoryBuffer()
       val upload = Upload(buffer)
       add(upload)
-      upload.setAcceptedFileTypes("text/csv")
-      upload.maxFiles = 1
+      //upload.setAcceptedFileTypes("text/csv")
+      //upload.maxFiles = 1
       upload.addSucceededListener {event ->
         uploadFile(buffer.inputStream)
       }
