@@ -29,20 +29,21 @@ class PainelGridPendente(val desmarcaPedido: () -> Unit,
         addThemeVariants(LUMO_SMALL)
       }
       ClipboardHelper("${pedido.nota}: ${pedido.numPedido}", button)
+    }.apply {
+      width = "20px"
     }
     colLoja()
     colnumPedido()
     colDataPedido()
     colHoraPedido()
-    colMetodo()
-    //colNotaFiscal()
-    //colDataNota()
-    //colHoraNota()
+    colValorFrete()
     colTotal()
-    colDataLink()
-    colHoraLink()
+    colMetodo()
+    colCartao()
+    colWhatsapp()
     colUsername()
-    colObs()
+    colCliente()
+    colVendedor()
   }
   
   override fun filterBar() = FilterBarPendente()
@@ -66,6 +67,8 @@ class PainelGridPendente(val desmarcaPedido: () -> Unit,
       val buffer = MemoryBuffer()
       val upload = Upload(buffer)
       add(upload)
+      upload.setAcceptedFileTypes("text/csv")
+      upload.maxFiles = 1
       upload.addSucceededListener {event ->
         uploadFile(buffer.inputStream)
       }

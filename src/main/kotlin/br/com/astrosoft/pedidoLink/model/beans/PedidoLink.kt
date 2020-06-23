@@ -53,24 +53,24 @@ data class PedidoLink(val loja: Int,
     fun listaGeral(): List<PedidoLink> {
       val list = saci.listaPedidoLink(storeno)
       return list.filter {
-        it.notaFiscal == "" && it.dataLink == null && it.status == 1
+        it.notaFiscal == "" && it.dataLink == null && listOf(1, 8).contains(it.status)
       }
     }
-  
+    
     fun listaPendente(): List<PedidoLink> {
       val list = saci.listaPedidoLink(storeno)
       return list.filter {
         it.dataLink != null && it.notaFiscal == "" && it.confirmado == "N"
       }
     }
-  
+    
     fun listaFinalizado(): List<PedidoLink> {
       val list = saci.listaPedidoLink(storeno)
       return list.filter {
         it.dataLink != null && it.notaFiscal == "" && it.confirmado == "S"
       }
     }
-  
+    
     fun listaFaturado(): List<PedidoLink> {
       val list = saci.listaPedidoLink(storeno)
       return list.filter {
