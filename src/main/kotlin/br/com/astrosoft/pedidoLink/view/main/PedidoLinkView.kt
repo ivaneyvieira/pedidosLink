@@ -21,6 +21,7 @@ import com.vaadin.flow.component.formlayout.FormLayout
 import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.Route
+import java.io.InputStream
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -37,7 +38,7 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
   
   init {
     gridGeral = PainelGridGeral(::marcaPedido) {viewModel.updateGridGeral()}
-    gridPendente = PainelGridPendente(::desmarcaPedido) {viewModel.updateGridPendente()}
+    gridPendente = PainelGridPendente(::desmarcaPedido, ::uploadFile) {viewModel.updateGridPendente()}
     gridFaturado = PainelGridFaturado {viewModel.updateGridFaturado()}
     tabSheet {
       setSizeFull()
@@ -46,6 +47,10 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
       tabGrid(TAB_FATURADO, gridFaturado)
     }
     viewModel.updateGridGeral()
+  }
+  
+  private fun uploadFile(inputStream: InputStream) {
+    viewModel.uploadFile(inputStream)
   }
   
   private fun desmarcaPedido() {

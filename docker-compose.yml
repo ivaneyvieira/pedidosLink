@@ -8,6 +8,7 @@ services:
     environment:
       TZ: "America/Fortaleza"
       EBEAN_PROPS: /etc/ebean.properties
+      LANG: pt_BR.UTF-8
     volumes:
       - ./build/libs/producao.war:/usr/local/tomcat/webapps/pedidosLink.war
       - ./ebean.properties:/etc/ebean.properties

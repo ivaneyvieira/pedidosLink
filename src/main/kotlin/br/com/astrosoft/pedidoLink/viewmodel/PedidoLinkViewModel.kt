@@ -4,6 +4,7 @@ import br.com.astrosoft.framework.viewmodel.IView
 import br.com.astrosoft.framework.viewmodel.ViewModel
 import br.com.astrosoft.framework.viewmodel.fail
 import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
+import java.io.InputStream
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -57,6 +58,10 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
       pedidoLink.marcaHorario(null, null)
     }
     updateGridPendente()
+  }
+  
+  fun uploadFile(inputStream: InputStream) {
+  
   }
 }
 
