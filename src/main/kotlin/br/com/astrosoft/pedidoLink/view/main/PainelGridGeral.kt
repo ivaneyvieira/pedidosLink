@@ -36,12 +36,6 @@ class PainelGridGeral(val marcaPedido: (PedidoLink) -> Unit, blockUpdate: () -> 
     colUsername()
     colCliente()
     colVendedor()
-    //colNotaFiscal()
-    //colDataNota()
-    //colHoraNota()
-    //colDataLink()
-    //colHoraLink()
-    //    colObs()
   }
   
   override fun filterBar() = FilterBarGeral()

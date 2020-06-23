@@ -100,7 +100,7 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
     get() = gridFaturado.filterBar as IFiltroFaturado
   
   companion object {
-    const val TAB_GERAL: String = "Inserido"
+    const val TAB_GERAL: String = "Inserir"
     const val TAB_PENDENTE: String = "Pendente"
     const val TAB_FINALIZADO: String = "Finalziado"
     const val TAB_FATURADO: String = "Faturado"
