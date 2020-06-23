@@ -75,27 +75,22 @@ fun Grid<PedidoLink>.colValorFrete() = addColumnDouble(PedidoLink::valorFrete) {
 
 fun Grid<PedidoLink>.colTotal() = addColumnDouble(PedidoLink::total) {
   setHeader("Total")
-  width = "10%"
 }
 
 fun Grid<PedidoLink>.colValorLink() = addColumnDouble(PedidoLink::valorLink) {
   setHeader("Valor Link")
-  width = "10%"
 }
 
 fun Grid<PedidoLink>.colCartao() = addColumnString(PedidoLink::cartao) {
   setHeader("Cartão")
-  width = "10%"
 }
 
 fun Grid<PedidoLink>.colWhatsapp() = addColumnString(PedidoLink::whatsapp) {
   setHeader("Whatsapp")
-  width = "10%"
 }
 
 fun Grid<PedidoLink>.colCliente() = addColumnString(PedidoLink::cliente) {
   setHeader("Cliente")
-  width = "10%"
 }
 
 fun Grid<PedidoLink>.colVendedor() = addColumnString(PedidoLink::vendedor) {
