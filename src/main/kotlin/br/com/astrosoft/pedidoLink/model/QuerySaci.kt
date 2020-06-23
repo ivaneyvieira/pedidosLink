@@ -38,6 +38,7 @@ class QuerySaci: QueryDB(driver, url, username, password) {
     val sql = "/sqlSaci/pedidoLink.sql"
     return query(sql, PedidoLink::class) {
       addOptionalParameter("storeno", storeno)
+      addOptionalParameter("data", 20200620)
     }
   }
   
@@ -48,6 +49,22 @@ class QuerySaci: QueryDB(driver, url, username, password) {
       addParameter("ordno", numPedido)
       addParameter("data", data)
       addParameter("hora", hora)
+    }
+  }
+  
+  fun insertFile(records: List<List<String>>) {
+    val header =
+      records.firstOrNull()
+        .orEmpty()
+    val linhas = records.drop(1)
+    val sql = "/sqlSaci/insertTef.sql"
+    linhas.forEach {linha ->
+      script(sql) {
+        header.forEachIndexed {index, coluna ->
+          val value = linha.getOrNull(index) ?: ""
+          addOptionalParameter(coluna, value)
+        }
+      }
     }
   }
   

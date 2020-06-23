@@ -38,6 +38,23 @@ WHERE (eord.storeno = :storeno OR :storeno = 0)
   AND (eord.date >= 20200608)
 GROUP BY eord.storeno, eord.ordno;
 
+
+DROP TABLE IF EXISTS sqldados.TTEF;
+CREATE TEMPORARY TABLE sqldados.TTEF (
+  PRIMARY KEY (storeno, ordno)
+)
+SELECT MID(PEDIDO, 1, 2)       AS loja,
+       S.no                    AS storeno,
+       MID(PEDIDO, 4, 100) * 1 AS ordno,
+       PEDIDO
+FROM sqldados.engecopi_tef_bruto AS B
+  INNER JOIN sqldados.store      AS S
+	       ON S.sname = MID(PEDIDO, 1, 2)
+WHERE nsu > date_format(:data, '%y%m%d') * 1000000000
+  AND STATUS = 'CON'
+  AND (S.no = :storeno OR :storeno = 0)
+GROUP BY PEDIDO;
+
 SELECT P.storeno                                             AS loja,
        P.ordno                                               AS numPedido,
        IF(P.date = 0, NULL, cast(P.date AS DATE))            AS dataPedido,
@@ -56,8 +73,12 @@ SELECT P.storeno                                             AS loja,
        cartao                                                AS cartao,
        cast(WHATSAPP AS CHAR)                                AS whatsapp,
        CLIENTE                                               AS cliente,
-       VENDEDOR                                              AS vendedor
+       VENDEDOR                                              AS vendedor,
+       P.status                                              AS status,
+       IF(T.PEDIDO IS NULL, 'N', 'S')                        AS confirmado
 FROM sqldados.eord          AS P
+  LEFT JOIN  sqldados.TTEF  AS T
+	       USING (storeno, ordno)
   LEFT JOIN  sqlpdv.pxa     AS PX
 	       ON (P.storeno = PX.storeno AND P.ordno = PX.eordno)
   INNER JOIN sqldados.custp AS C
@@ -73,7 +94,7 @@ FROM sqldados.eord          AS P
   INNER JOIN sqldados.TPED
 	       ON TPED.storeno = P.storeno AND TPED.ordno = P.ordno
 WHERE PM.sname LIKE '%LINK%'
-  AND P.date >= 20200608
+  AND P.date >= :data
   AND P.status <> 5
   AND (P.storeno = :storeno OR :storeno = 0)
 GROUP BY P.ordno, P.storeno
