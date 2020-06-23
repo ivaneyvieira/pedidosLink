@@ -2,6 +2,7 @@ package br.com.astrosoft.framework.view
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.util.*
 import javax.servlet.ServletContextEvent
 import javax.servlet.ServletContextListener
 import javax.servlet.annotation.WebListener
@@ -15,6 +16,7 @@ class Bootstrap: ServletContextListener {
   }
 
   override fun contextInitialized(sce: ServletContextEvent?) {
+    Locale.setDefault( Locale ("pt", "BR"))
     log?.info("Starting up")
     val home = System.getenv("HOME")
     val fileName = System.getenv("EBEAN_PROPS") ?: "$home/ebean.properties"
