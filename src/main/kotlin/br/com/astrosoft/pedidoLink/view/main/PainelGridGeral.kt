@@ -22,7 +22,7 @@ class PainelGridGeral(val marcaPedido: (PedidoLink) -> Unit, blockUpdate: () -> 
         addThemeVariants(LUMO_SMALL)
         onLeftClick {marcaPedido(pedido)}
       }
-      ClipboardHelper("${pedido.nota} ${pedido.numPedido}", button)
+      ClipboardHelper("${pedido.nota}: ${pedido.numPedido}", button)
     }
     colLoja()
     colnumPedido()
