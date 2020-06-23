@@ -2,24 +2,22 @@ DROP TEMPORARY TABLE IF EXISTS sqldados.TPED;
 CREATE TEMPORARY TABLE sqldados.TPED (
   PRIMARY KEY (storeno, ordno)
 )
-SELECT 'Link de pagamento loja ENGECOPI Ped MF'                                                   AS note,
+SELECT 'Link de pagamento loja ENGECOPI Ped MF'                                         AS note,
        eord.storeno,
        eord.ordno,
-       CONCAT(eord.nfno, '/', eord.nfse)                                                          AS NFiscal,
-       CONCAT(eord.nfno_futura, '/', eord.nfse_futura)                                            AS NF_Fat,
-       eord.amount                                                                                AS valor,
-       IF(eord.other = 0, MID(eordrk.remarks__480, 7, 10), eord.other) /
-       100                                                                                        AS frete,
-       MID(eordrk.remarks__480, 160, 10)                                                          AS CARTAO,
-       eord.amount + IF(eord.other = 0, (MID(eordrk.remarks__480, 7, 2) * 100), eord.other) /
-		     100                                                                          AS total,
-       CONCAT(paym.no, '-', paym.sname)                                                           AS MET,
-       LPAD(emp.sname, 10, ' ')                                                                   AS VENDEDOR,
-       IF(custp.auxString2 = 'J', LPAD(custp.tel, 9, ' '),
-	  LPAD(custp.celular, 9, ' '))                                                            AS WHATSAPP,
-       ifnull(custp.name, '*')                                                                    AS CLIENTE,
-       custp.no                                                                                   AS CODCLI,
-       eord.amount / 100                                                                          AS amount
+       CONCAT(eord.nfno, '/', eord.nfse)                                                AS NFiscal,
+       CONCAT(eord.nfno_futura, '/', eord.nfse_futura)                                  AS NF_Fat,
+       eord.amount                                                                      AS valor,
+       IF(eord.other = 0, MID(eordrk.remarks__480, 7, 10), eord.other) / 100            AS frete,
+       MID(eordrk.remarks__480, 160, 10)                                                AS CARTAO,
+       (eord.amount + IF(eord.other = 0, (MID(eordrk.remarks__480, 7, 2) * 100), eord.other)) /
+       100                                                                              AS total,
+       CONCAT(paym.no, '-', paym.sname)                                                 AS MET,
+       LPAD(emp.sname, 10, ' ')                                                         AS VENDEDOR,
+       IF(custp.auxString2 = 'J', LPAD(custp.tel, 9, ' '), LPAD(custp.celular, 9, ' ')) AS WHATSAPP,
+       ifnull(custp.name, '*')                                                          AS CLIENTE,
+       custp.no                                                                         AS CODCLI,
+       eord.amount / 100                                                                AS amount
 FROM sqldados.eord
   LEFT JOIN sqldados.eoprd
 	      ON (eoprd.storeno = eord.storeno AND eoprd.ordno = eord.ordno)
@@ -56,7 +54,7 @@ SELECT P.storeno                                             AS loja,
        frete                                                 AS valorFrete,
        IF(frete IS NULL, TPED.amount, total)                 AS total,
        cartao                                                AS cartao,
-       WHATSAPP                                              AS whatsapp,
+       cast(WHATSAPP AS CHAR)                                AS whatsapp,
        CLIENTE                                               AS cliente,
        VENDEDOR                                              AS vendedor
 FROM sqldados.eord          AS P

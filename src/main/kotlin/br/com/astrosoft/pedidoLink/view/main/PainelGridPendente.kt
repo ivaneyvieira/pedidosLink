@@ -5,17 +5,31 @@ import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroPendente
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.onLeftClick
+import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.datepicker.DatePicker
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.Grid.SelectionMode
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.IntegerField
+import com.vaadin.flow.component.upload.Upload
+import com.vaadin.flow.component.upload.receivers.MemoryBuffer
+import org.vaadin.olli.ClipboardHelper
+import java.io.InputStream
 import java.time.LocalDate
 
-class PainelGridPendente(val desmarcaPedido: () -> Unit, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(blockUpdate) {
+class PainelGridPendente(val desmarcaPedido: () -> Unit,
+                         val uploadFile: (InputStream) -> Unit,
+                         blockUpdate: () -> Unit): PainelGrid<PedidoLink>(blockUpdate) {
   override fun Grid<PedidoLink>.gridConfig() {
     setSelectionMode(SelectionMode.MULTI)
+    addComponentColumn {pedido->
+      val button = Button().apply {
+        icon = VaadinIcon.COPY_O.create()
+        addThemeVariants(LUMO_SMALL)
+      }
+      ClipboardHelper("${pedido.nota}: ${pedido.numPedido}", button)
+    }
     colLoja()
     colnumPedido()
     colDataPedido()
@@ -24,6 +38,7 @@ class PainelGridPendente(val desmarcaPedido: () -> Unit, blockUpdate: () -> Unit
     //colNotaFiscal()
     //colDataNota()
     //colHoraNota()
+    colTotal()
     colDataLink()
     colHoraLink()
     colUsername()
@@ -38,7 +53,7 @@ class PainelGridPendente(val desmarcaPedido: () -> Unit, blockUpdate: () -> Unit
     
     override fun FilterBar.contentBlock() {
       button("Desmarca Link") {
-        icon = VaadinIcon.CHECK.create()
+        icon = VaadinIcon.CHECK_CIRCLE_O.create()
         addThemeVariants(LUMO_SMALL)
         onLeftClick {desmarcaPedido()}
       }
@@ -47,6 +62,12 @@ class PainelGridPendente(val desmarcaPedido: () -> Unit, blockUpdate: () -> Unit
       }
       edtData = edtDataPedido() {
         addValueChangeListener {blockUpdate()}
+      }
+      val buffer = MemoryBuffer()
+      val upload = Upload(buffer)
+      add(upload)
+      upload.addSucceededListener {event ->
+        uploadFile(buffer.inputStream)
       }
     }
     
