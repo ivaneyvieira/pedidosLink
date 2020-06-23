@@ -43,7 +43,8 @@ import com.vaadin.flow.router.BeforeEnterObserver
 import com.vaadin.flow.router.BeforeLeaveEvent
 import com.vaadin.flow.router.BeforeLeaveObserver
 import com.vaadin.flow.shared.Registration
-import org.claspina.confirmdialog.ButtonOption.*
+import org.claspina.confirmdialog.ButtonOption.caption
+import org.claspina.confirmdialog.ButtonOption.closeOnClick
 import org.claspina.confirmdialog.ButtonType.OK
 import org.claspina.confirmdialog.ConfirmDialog
 import java.sql.Time
@@ -84,7 +85,7 @@ abstract class ViewLayout<VM: ViewModel<*>>: VerticalLayout(), IView, BeforeLeav
       .open()
   }
   
-  fun showForm(caption: String, form: FormLayout, runConfirm : (() -> Unit)) {
+  fun showForm(caption: String, form: FormLayout, runConfirm: (() -> Unit)) {
     ConfirmDialog.create()
       .withCaption(caption)
       .withMessage(form)
@@ -311,27 +312,28 @@ class TabClick(s: String?): Tab(s) {
 }
 
 fun DatePicker.localePtBr() {
-  this.setLocale(Locale("pt-br"))
-  this.setI18n(DatePickerI18n().setWeek("semana")
-                 .setCalendar("calendário")
-                 .setClear("apagar")
-                 .setToday("hoje")
-                 .setCancel("cancelar")
-                 .setFirstDayOfWeek(1)
-                 .setMonthNames(Arrays.asList("janeiro",
-                                              "fevereiro",
-                                              "março",
-                                              "abril",
-                                              "maio",
-                                              "junho",
-                                              "julho",
-                                              "agosto",
-                                              "setembro",
-                                              "outubro",
-                                              "novembro",
-                                              "dezembro"))
-                 .setWeekdays(Arrays.asList("domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"))
-                 .setWeekdaysShort(Arrays.asList("dom", "seg", "ter", "qua", "qui", "sex", "sab")))
+  this.locale = Locale("pt-br")
+  this.i18n =
+    DatePickerI18n().setWeek("semana")
+      .setCalendar("calendário")
+      .setClear("apagar")
+      .setToday("hoje")
+      .setCancel("cancelar")
+      .setFirstDayOfWeek(1)
+      .setMonthNames(Arrays.asList("janeiro",
+                                   "fevereiro",
+                                   "março",
+                                   "abril",
+                                   "maio",
+                                   "junho",
+                                   "julho",
+                                   "agosto",
+                                   "setembro",
+                                   "outubro",
+                                   "novembro",
+                                   "dezembro"))
+      .setWeekdays(Arrays.asList("domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"))
+      .setWeekdaysShort(Arrays.asList("dom", "seg", "ter", "qua", "qui", "sex", "sab"))
 }
 
 fun <T> ListDataProvider<T>.updateItens(itens: List<T>) {

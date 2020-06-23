@@ -19,76 +19,67 @@ import com.vaadin.flow.data.value.ValueChangeMode
 
 fun Grid<PedidoLink>.colLoja() = addColumnInt(PedidoLink::loja) {
   setHeader("Lj")
-  width = "10%"
 }
 
 fun Grid<PedidoLink>.colnumPedido() = addColumnInt(PedidoLink::numPedido) {
   setHeader("Pedido")
-  width = "10%"
 }
 
 fun Grid<PedidoLink>.colDataPedido() = addColumnLocalDate(PedidoLink::dataPedido) {
   setHeader("Data")
-  width = "10%"
 }
 
 fun Grid<PedidoLink>.colHoraPedido() = addColumnLocalTime(PedidoLink::horaPedido) {
   setHeader("Hora")
-  width = "10%"
 }
 
 fun Grid<PedidoLink>.colMetodo() = addColumnInt(PedidoLink::metodo) {
   setHeader("Método")
-  width = "10%"
 }
 
 fun Grid<PedidoLink>.colNotaFiscal() = addColumnString(PedidoLink::notaFiscal) {
   setHeader("NF")
-  width = "10%"
 }
 
 fun Grid<PedidoLink>.colDataNota() = addColumnLocalDate(PedidoLink::dataNota) {
   setHeader("Data NF")
-  width = "10%"
 }
 
 fun Grid<PedidoLink>.colHoraNota() = addColumnLocalTime(PedidoLink::horaNota) {
   setHeader("Hora NF")
-  width = "10%"
 }
 
 fun Grid<PedidoLink>.colDataLink() = addColumnLocalDate(PedidoLink::dataLink) {
   setHeader("Data Link")
-  width = "10%"
 }
 
 fun Grid<PedidoLink>.colHoraLink() = addColumnLocalTime(PedidoLink::horaLink) {
   setHeader("Hora Link")
-  width = "10%"
 }
 
 fun Grid<PedidoLink>.colUsername() = addColumnString(PedidoLink::username) {
   setHeader("Usuário")
-  width = "10%"
 }
 
 fun Grid<PedidoLink>.colObs() = addColumnString(PedidoLink::obs) {
   setHeader("Obs")
-  width = "10%"
 }
 
 fun Grid<PedidoLink>.colNota() = addColumnString(PedidoLink::nota) {
   setHeader("LJ")
-  width = "10%"
 }
 
 fun Grid<PedidoLink>.colValorFrete() = addColumnDouble(PedidoLink::valorFrete) {
   setHeader("Frete")
-  width = "10%"
 }
 
 fun Grid<PedidoLink>.colTotal() = addColumnDouble(PedidoLink::total) {
   setHeader("Total")
+  width = "10%"
+}
+
+fun Grid<PedidoLink>.colValorLink() = addColumnDouble(PedidoLink::valorLink) {
+  setHeader("Valor Link")
   width = "10%"
 }
 
@@ -109,7 +100,6 @@ fun Grid<PedidoLink>.colCliente() = addColumnString(PedidoLink::cliente) {
 
 fun Grid<PedidoLink>.colVendedor() = addColumnString(PedidoLink::vendedor) {
   setHeader("Vendedor")
-  width = "10%"
 }
 
 //Campos de filtro

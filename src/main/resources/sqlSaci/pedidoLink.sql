@@ -46,7 +46,8 @@ CREATE TEMPORARY TABLE sqldados.TTEF (
 SELECT MID(PEDIDO, 1, 2)       AS loja,
        S.no                    AS storeno,
        MID(PEDIDO, 4, 100) * 1 AS ordno,
-       PEDIDO
+       PEDIDO                  AS PEDIDO,
+       SUM(VALOR / 100)        AS VALOR
 FROM sqldados.engecopi_tef_bruto AS B
   INNER JOIN sqldados.store      AS S
 	       ON S.sname = MID(PEDIDO, 1, 2)
@@ -60,16 +61,18 @@ SELECT P.storeno                                             AS loja,
        IF(P.date = 0, NULL, cast(P.date AS DATE))            AS dataPedido,
        SEC_TO_TIME(P.l4)                                     AS horaPedido,
        P.paymno                                              AS metodo,
-       IFNULL(cast(N.nfno AS CHAR), '')                      AS nfnoNota,
-       IFNULL(N.nfse, '')                                    AS nfseNota,
-       if(N.issuedate = 0, NULL, cast(N.issuedate AS DATE))  AS dataNota,
-       sec_to_time(N2.auxLong4)                              AS horaNota,
+       IFNULL(cast(IFNULL(N.nfno, F.nfno) AS CHAR), '')      AS nfnoNota,
+       IFNULL(IFNULL(N.nfse, F.nfse), '')                    AS nfseNota,
+       if(IFNULL(N.issuedate, F.issuedate) = 0, NULL,
+	  cast(IFNULL(N.issuedate, F.issuedate) AS DATE))    AS dataNota,
+       sec_to_time(IFNULL(N2.auxLong4, F2.auxLong4))         AS horaNota,
        IFNULL(U.name, '')                                    AS username,
        cast(if(P.l15 = 0, NULL, P.l15) AS DATE)              AS dataLink,
        IF(P.l16 = 0, cast(NULL AS TIME), sec_to_time(P.l16)) AS horaLink,
        note                                                  AS nota,
        frete                                                 AS valorFrete,
        IF(frete IS NULL, TPED.amount, total)                 AS total,
+       IFNULL(T.VALOR, 0.00)                                 AS valorLink,
        cartao                                                AS cartao,
        cast(WHATSAPP AS CHAR)                                AS whatsapp,
        CLIENTE                                               AS cliente,
@@ -87,6 +90,10 @@ FROM sqldados.eord          AS P
 	       ON N.storeno = P.storeno AND N.nfno = P.nfno AND N.nfse = P.nfse
   LEFT JOIN  sqldados.nf2   AS N2
 	       ON N.storeno = N2.storeno AND N.pdvno = N2.pdvno AND N.xano = N2.xano
+  LEFT JOIN  sqldados.nf    AS F
+	       ON F.storeno = P.storeno AND F.nfno = P.nfno_futura AND F.nfse = P.nfse_futura
+  LEFT JOIN  sqldados.nf2   AS F2
+	       ON F.storeno = F2.storeno AND F.pdvno = F2.pdvno AND F.xano = F2.xano
   INNER JOIN sqldados.users AS U
 	       ON U.no = P.userno
   INNER JOIN sqldados.paym  AS PM
