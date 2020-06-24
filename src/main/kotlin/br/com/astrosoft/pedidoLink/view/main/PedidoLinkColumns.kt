@@ -97,6 +97,26 @@ fun Grid<PedidoLink>.colVendedor() = addColumnString(PedidoLink::vendedor) {
   setHeader("Vendedor")
 }
 
+fun Grid<PedidoLink>.colParcelas() = addColumnInt(PedidoLink::parcelas) {
+  setHeader("Parc")
+}
+
+fun Grid<PedidoLink>.colAutorizadora() = addColumnString(PedidoLink::autorizadora) {
+  setHeader("Autoriz")
+}
+
+fun Grid<PedidoLink>.colAutorizacao() = addColumnString(PedidoLink::autorizacao) {
+  setHeader("Autorização")
+}
+
+fun Grid<PedidoLink>.colNsuHost() = addColumnString(PedidoLink::nsuHost) {
+  setHeader("Nsu Host")
+}
+
+fun Grid<PedidoLink>.colDataTef() = addColumnLocalDate(PedidoLink::dataTef) {
+  setHeader("Data Tef")
+}
+
 //Campos de filtro
 fun (@VaadinDsl HasComponents).edtPedido(block: (@VaadinDsl IntegerField).() -> Unit = {}) = integerField("Pedido") {
   this.valueChangeMode = ValueChangeMode.TIMEOUT

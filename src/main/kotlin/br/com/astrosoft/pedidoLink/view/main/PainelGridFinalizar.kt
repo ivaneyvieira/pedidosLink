@@ -18,9 +18,11 @@ class PainelGridFinalizar(blockUpdate: () -> Unit): PainelGrid<PedidoLink>(block
     colTotal()
     colMetodo()
     colCartao()
-    colWhatsapp()
-    colUsername()
-    colCliente()
+    colAutorizacao()
+    colParcelas()
+    colAutorizacao()
+    colNsuHost()
+    colDataTef()
     colVendedor()
   }
   

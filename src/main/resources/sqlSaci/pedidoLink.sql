@@ -60,7 +60,13 @@ SELECT MID(PEDIDO, 1, 2)       AS loja,
        S.no                    AS storeno,
        MID(PEDIDO, 4, 100) * 1 AS ordno,
        PEDIDO                  AS PEDIDO,
-       SUM(VALOR / 100)        AS VALOR
+       SUM(VALOR / 100)        AS VALOR,
+       PARCELAS                AS PARCELAS,
+       NOMEAUTORIZADORA        AS AUTORIZADORA,
+       AUTORIZACAO             AS AUTORIZACAO,
+       NSUHOST                 AS NSUHOST,
+       cast(CONCAT(MID(DATACRIACAO, 7, 4), MID(DATACRIACAO, 4, 2), MID(DATACRIACAO, 1, 2)) *
+	    1 AS DATE)         AS DATACRIACAO
 FROM sqldados.engecopi_tef_bruto AS B
   INNER JOIN sqldados.store      AS S
 	       ON S.sname = MID(PEDIDO, 1, 2)
@@ -93,7 +99,12 @@ SELECT P.storeno                                             AS loja,
        P.status                                              AS status,
        IF(T.PEDIDO IS NULL, 'N', 'S')                        AS confirmado,
        IFNULL(senha, '')                                     AS senhaVendedor,
-       P.c1                                                  AS marca
+       P.c1                                                  AS marca,
+       PARCELAS                                              AS parcelas,
+       AUTORIZADORA                                          AS autorizadora,
+       AUTORIZACAO                                           AS autorizacao,
+       NSUHOST                                               AS nsuHost,
+       DATACRIACAO                                           AS dataTef
 FROM sqldados.eord          AS P
   LEFT JOIN  sqldados.TTEF  AS T
 	       USING (storeno, ordno)

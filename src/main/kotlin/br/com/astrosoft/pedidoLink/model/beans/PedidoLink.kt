@@ -32,7 +32,12 @@ data class PedidoLink(val loja: Int,
                       val status: Int,
                       val confirmado: String,
                       val senhaVendedor: String,
-                      val marca: String) {
+                      val marca: String,
+                      val parcelas: Int?,
+                      val autorizadora: String?,
+                      val autorizacao: String?,
+                      val nsuHost: String?,
+                      val dataTef: LocalDate?) {
   val notaFiscal: String
     get() = numeroNota(nfnoNota, nfseNota)
   
