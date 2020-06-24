@@ -9,13 +9,25 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(view) {
-  fun updateGridGeral() {
-    view.updateGridGeral(listGeral())
+  fun updateGridPedido() {
+    view.updateGridPedido(listPedido())
   }
   
-  private fun listGeral(): List<PedidoLink> {
-    val filtro = view.filtroGeral
-    return PedidoLink.listaGeral()
+  private fun listPedido(): List<PedidoLink> {
+    val filtro = view.filtroPedido
+    return PedidoLink.listaPedido()
+      .filter {
+        (it.dataPedido == filtro.data() || filtro.data() == null) && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
+      }
+  }
+  
+  fun updateGridLink() {
+    view.updateGridLink(listLink())
+  }
+  
+  private fun listLink(): List<PedidoLink> {
+    val filtro = view.filtroLink
+    return PedidoLink.listaLink()
       .filter {
         (it.dataPedido == filtro.data() || filtro.data() == null) && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
       }
@@ -59,7 +71,7 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
   
   fun marcaPedido(pedido: PedidoLink?) = exec {
     pedido?.marcaHorario(LocalDate.now(), LocalTime.now())
-    updateGridGeral()
+    updateGridPedido()
   }
   
   fun desmarcaPedido() = exec {
@@ -76,9 +88,29 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
     PedidoLink.uploadFile(inputStream)
     updateGridPendente()
   }
+  
+  fun marcaVendedor(pedido: PedidoLink, senha: String) = exec {
+    if(pedido.senhaVendedor == senha) pedido.marcaVendedor("S")
+    else fail("Senha incorreta")
+    updateGridPedido()
+  }
+  
+  fun desmarcaVendedor() {
+    val itens =      view.itensSelecionadoLink()
+        .ifEmpty {fail("Nenhum item selecionado")}
+    itens.forEach {pedidoLink: PedidoLink ->
+      pedidoLink.marcaVendedor("")
+    }
+    updateGridLink()
+  }
 }
 
-interface IFiltroGeral {
+interface IFiltroPedido {
+  fun numPedido(): Int
+  fun data(): LocalDate?
+}
+
+interface IFiltroLink {
   fun numPedido(): Int
   fun data(): LocalDate?
 }
@@ -99,18 +131,21 @@ interface IFiltroFaturado {
 }
 
 interface IPedidoLinkView: IView {
-  fun updateGridGeral(itens: List<PedidoLink>)
+  fun updateGridPedido(itens: List<PedidoLink>)
+  fun updateGridLink(itens: List<PedidoLink>)
   fun updateGridPendente(itens: List<PedidoLink>)
   fun updateGridFinalizado(itens: List<PedidoLink>)
   fun updateGridFaturado(itens: List<PedidoLink>)
   
-  fun itensSelecionadoGeral(): List<PedidoLink>
+  fun itensSelecionadoPedido(): List<PedidoLink>
+  fun itensSelecionadoLink(): List<PedidoLink>
   fun itensSelecionadoPendente(): List<PedidoLink>
   
-  val filtroGeral: IFiltroGeral
+  val filtroPedido: IFiltroPedido
+  val filtroLink: IFiltroLink
   val filtroPendente: IFiltroPendente
   val filtroFinalizado: IFiltroFinalizado
   val filtroFaturado: IFiltroFaturado
 }
 
-data class CardLink(var data: LocalDate?, var hora: LocalTime?)
+data class CardVendendor(var nome: String, var senha: String?)

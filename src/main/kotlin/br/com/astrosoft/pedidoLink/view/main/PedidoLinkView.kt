@@ -6,31 +6,34 @@ import br.com.astrosoft.framework.view.localePtBr
 import br.com.astrosoft.framework.view.tabGrid
 import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
 import br.com.astrosoft.pedidoLink.view.layout.PedidoLinkLayout
-import br.com.astrosoft.pedidoLink.viewmodel.CardLink
+import br.com.astrosoft.pedidoLink.viewmodel.CardVendendor
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroFaturado
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroFinalizado
-import br.com.astrosoft.pedidoLink.viewmodel.IFiltroGeral
+import br.com.astrosoft.pedidoLink.viewmodel.IFiltroLink
+import br.com.astrosoft.pedidoLink.viewmodel.IFiltroPedido
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroPendente
 import br.com.astrosoft.pedidoLink.viewmodel.IPedidoLinkView
 import br.com.astrosoft.pedidoLink.viewmodel.PedidoLinkViewModel
 import com.github.mvysny.karibudsl.v10.bind
 import com.github.mvysny.karibudsl.v10.datePicker
+import com.github.mvysny.karibudsl.v10.passwordField
 import com.github.mvysny.karibudsl.v10.tabSheet
+import com.github.mvysny.karibudsl.v10.textField
 import com.github.mvysny.karibudsl.v10.timePicker
 import com.vaadin.flow.component.dependency.HtmlImport
 import com.vaadin.flow.component.formlayout.FormLayout
+import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_SMALL
 import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.router.PageTitle
 import com.vaadin.flow.router.Route
 import java.io.InputStream
-import java.time.LocalDate
-import java.time.LocalTime
 
 @Route(layout = PedidoLinkLayout::class)
 @PageTitle(AppConfig.title)
 @HtmlImport("frontend://styles/shared-styles.html")
 class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
-  private val gridGeral: PainelGridGeral
+  private val gridPedido: PainelGridPedido
+  private val gridLink: PainelGridLink
   private val gridPendente: PainelGridPendente
   private val gridFinalizado: PainelGridFinalizado
   private val gridFaturado: PainelGridFaturado
@@ -39,18 +42,28 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
   override fun isAccept() = true
   
   init {
-    gridGeral = PainelGridGeral(::marcaPedido) {viewModel.updateGridGeral()}
+    gridPedido = PainelGridPedido(::marcaVendedor) {viewModel.updateGridPedido()}
+    gridLink = PainelGridLink(::marcaLink, ::desmarcaPedidoLink) {viewModel.updateGridLink()}
     gridPendente = PainelGridPendente(::desmarcaPedido, ::uploadFile) {viewModel.updateGridPendente()}
     gridFinalizado = PainelGridFinalizado() {viewModel.updateGridFinalizado()}
     gridFaturado = PainelGridFaturado {viewModel.updateGridFaturado()}
     tabSheet {
       setSizeFull()
-      tabGrid(TAB_GERAL, gridGeral)
+      tabGrid(TAB_PEDIDO, gridPedido)
+      tabGrid(TAB_LINK, gridLink)
       tabGrid(TAB_PENDENTE, gridPendente)
       tabGrid(TAB_FINALIZADO, gridFinalizado)
       tabGrid(TAB_FATURADO, gridFaturado)
     }
-    viewModel.updateGridGeral()
+    viewModel.updateGridPedido()
+  }
+  
+  private fun desmarcaPedidoLink() {
+    viewModel.desmarcaVendedor()
+  }
+  
+  private fun marcaLink(pedidoLink: PedidoLink) {
+    viewModel.marcaPedido(pedidoLink)
   }
   
   private fun uploadFile(inputStream: InputStream) {
@@ -62,20 +75,35 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
     viewModel.desmarcaPedido()
   }
   
-  private fun marcaPedido(pedido: PedidoLink) {
-    viewModel.marcaPedido(pedido)
+  private fun marcaVendedor(pedido: PedidoLink) {
+    val form = FormVendedor()
+    val vendendor= CardVendendor(pedido.vendedor ?: "Não encontrado", "")
+    form.binder.bean = vendendor
+    showForm("Senha do vendedor", form){
+      val senha = form.binder.bean.senha ?: "#######"
+      viewModel.marcaVendedor(pedido, senha)
+    }
+    
   }
   
-  override fun itensSelecionadoGeral(): List<PedidoLink> {
-    return gridGeral.selectedItems()
+  override fun itensSelecionadoPedido(): List<PedidoLink> {
+    return gridPedido.selectedItems()
+  }
+  
+  override fun itensSelecionadoLink(): List<PedidoLink> {
+    return gridLink.selectedItems()
   }
   
   override fun itensSelecionadoPendente(): List<PedidoLink> {
     return gridPendente.selectedItems()
   }
   
-  override fun updateGridGeral(itens: List<PedidoLink>) {
-    gridGeral.updateGrid(itens)
+  override fun updateGridPedido(itens: List<PedidoLink>) {
+    gridPedido.updateGrid(itens)
+  }
+  
+  override fun updateGridLink(itens: List<PedidoLink>) {
+    gridLink.updateGrid(itens)
   }
   
   override fun updateGridPendente(itens: List<PedidoLink>) {
@@ -90,8 +118,10 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
     gridFaturado.updateGrid(itens)
   }
   
-  override val filtroGeral: IFiltroGeral
-    get() = gridGeral.filterBar as IFiltroGeral
+  override val filtroPedido: IFiltroPedido
+    get() = gridPedido.filterBar as IFiltroPedido
+  override val filtroLink: IFiltroLink
+    get() = gridLink.filterBar as IFiltroLink
   override val filtroPendente: IFiltroPendente
     get() = gridPendente.filterBar as IFiltroPendente
   override val filtroFinalizado: IFiltroFinalizado
@@ -100,26 +130,27 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
     get() = gridFaturado.filterBar as IFiltroFaturado
   
   companion object {
-    const val TAB_GERAL: String = "Inserir"
+    const val TAB_PEDIDO: String = "Pedido"
+    const val TAB_LINK: String = "Link"
     const val TAB_PENDENTE: String = "Pendente"
     const val TAB_FINALIZADO: String = "Finalziado"
     const val TAB_FATURADO: String = "Faturado"
   }
 }
 
-class FormLink: FormLayout() {
-  val binder = Binder<CardLink>(CardLink::class.java)
+class FormVendedor: FormLayout() {
+  val binder = Binder<CardVendendor>(CardVendendor::class.java)
   
   init {
-    datePicker("Data") {
-      localePtBr()
-      isClearButtonVisible = true
-      element.setAttribute("theme", "small")
-      bind(binder).bind(CardLink::data)
+    textField("Nome") {
+      isEnabled = false
+      addThemeVariants(LUMO_SMALL)
+      bind(binder).bind(CardVendendor::nome)
     }
-    
-    timePicker("Hora") {
-      bind(binder).bind(CardLink::hora)
+  
+    passwordField ("Nome") {
+      addThemeVariants(LUMO_SMALL)
+      bind(binder).bind(CardVendendor::senha)
     }
   }
 }
