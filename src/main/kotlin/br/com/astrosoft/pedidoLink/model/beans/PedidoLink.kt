@@ -44,6 +44,9 @@ data class PedidoLink(val loja: Int,
     }
   }
   
+  val noteClipBoard
+    get() = "${nota}: $numPedido"
+  
   fun marcaHorario(data: LocalDate?, hora: LocalTime?) {
     saci.marcaLink(loja, numPedido, data, hora)
   }

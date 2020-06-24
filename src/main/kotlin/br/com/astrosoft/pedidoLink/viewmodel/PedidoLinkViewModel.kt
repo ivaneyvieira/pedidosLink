@@ -71,7 +71,7 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
   
   fun marcaPedido(pedido: PedidoLink?) = exec {
     pedido?.marcaHorario(LocalDate.now(), LocalTime.now())
-    updateGridPedido()
+    updateGridLink()
   }
   
   fun desmarcaPedido() = exec {
@@ -148,4 +148,4 @@ interface IPedidoLinkView: IView {
   val filtroFaturado: IFiltroFaturado
 }
 
-data class CardVendendor(var nome: String, var senha: String?)
+data class SenhaVendendor(var nome: String, var senha: String?)

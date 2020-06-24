@@ -34,7 +34,7 @@ fun Grid<PedidoLink>.colHoraPedido() = addColumnLocalTime(PedidoLink::horaPedido
 }
 
 fun Grid<PedidoLink>.colMetodo() = addColumnInt(PedidoLink::metodo) {
-  setHeader("Método")
+  setHeader("Mét")
 }
 
 fun Grid<PedidoLink>.colNotaFiscal() = addColumnString(PedidoLink::notaFiscal) {

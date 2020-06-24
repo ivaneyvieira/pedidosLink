@@ -3,22 +3,12 @@ package br.com.astrosoft.pedidoLink.view.main
 import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroFinalizado
-import com.github.mvysny.karibudsl.v10.button
-import com.github.mvysny.karibudsl.v10.onLeftClick
-import com.vaadin.flow.component.button.Button
-import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.datepicker.DatePicker
 import com.vaadin.flow.component.grid.Grid
-import com.vaadin.flow.component.grid.Grid.SelectionMode
-import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.IntegerField
-import com.vaadin.flow.component.upload.Upload
-import com.vaadin.flow.component.upload.receivers.MemoryBuffer
-import org.vaadin.olli.ClipboardHelper
-import java.io.InputStream
 import java.time.LocalDate
 
-class PainelGridFinalizado(blockUpdate: () -> Unit): PainelGrid<PedidoLink>(blockUpdate) {
+class PainelGridFinalizar(blockUpdate: () -> Unit): PainelGrid<PedidoLink>(blockUpdate) {
   override fun Grid<PedidoLink>.gridConfig() {
     colLoja()
     colnumPedido()

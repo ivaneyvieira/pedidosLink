@@ -2,11 +2,9 @@ package br.com.astrosoft.pedidoLink.view.main
 
 import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.view.ViewLayout
-import br.com.astrosoft.framework.view.localePtBr
 import br.com.astrosoft.framework.view.tabGrid
 import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
 import br.com.astrosoft.pedidoLink.view.layout.PedidoLinkLayout
-import br.com.astrosoft.pedidoLink.viewmodel.CardVendendor
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroFaturado
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroFinalizado
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroLink
@@ -14,12 +12,11 @@ import br.com.astrosoft.pedidoLink.viewmodel.IFiltroPedido
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroPendente
 import br.com.astrosoft.pedidoLink.viewmodel.IPedidoLinkView
 import br.com.astrosoft.pedidoLink.viewmodel.PedidoLinkViewModel
+import br.com.astrosoft.pedidoLink.viewmodel.SenhaVendendor
 import com.github.mvysny.karibudsl.v10.bind
-import com.github.mvysny.karibudsl.v10.datePicker
 import com.github.mvysny.karibudsl.v10.passwordField
 import com.github.mvysny.karibudsl.v10.tabSheet
 import com.github.mvysny.karibudsl.v10.textField
-import com.github.mvysny.karibudsl.v10.timePicker
 import com.vaadin.flow.component.dependency.HtmlImport
 import com.vaadin.flow.component.formlayout.FormLayout
 import com.vaadin.flow.component.textfield.TextFieldVariant.LUMO_SMALL
@@ -31,22 +28,18 @@ import java.io.InputStream
 @Route(layout = PedidoLinkLayout::class)
 @PageTitle(AppConfig.title)
 @HtmlImport("frontend://styles/shared-styles.html")
-class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
-  private val gridPedido: PainelGridPedido
-  private val gridLink: PainelGridLink
-  private val gridPendente: PainelGridPendente
-  private val gridFinalizado: PainelGridFinalizado
-  private val gridFaturado: PainelGridFaturado
+class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView, IEventGridPedido, IEventGridLink,
+                      IEventGridPendente {
+  private val gridPedido = PainelGridPedido(this) {viewModel.updateGridPedido()}
+  private val gridLink = PainelGridLink(this) {viewModel.updateGridLink()}
+  private val gridPendente = PainelGridPendente(this) {viewModel.updateGridPendente()}
+  private val gridFinalizado = PainelGridFinalizar() {viewModel.updateGridFinalizado()}
+  private val gridFaturado = PainelGridFaturado {viewModel.updateGridFaturado()}
   override val viewModel: PedidoLinkViewModel = PedidoLinkViewModel(this)
   
   override fun isAccept() = true
   
   init {
-    gridPedido = PainelGridPedido(::marcaVendedor) {viewModel.updateGridPedido()}
-    gridLink = PainelGridLink(::marcaLink, ::desmarcaPedidoLink) {viewModel.updateGridLink()}
-    gridPendente = PainelGridPendente(::desmarcaPedido, ::uploadFile) {viewModel.updateGridPendente()}
-    gridFinalizado = PainelGridFinalizado() {viewModel.updateGridFinalizado()}
-    gridFaturado = PainelGridFaturado {viewModel.updateGridFaturado()}
     tabSheet {
       setSizeFull()
       tabGrid(TAB_PEDIDO, gridPedido)
@@ -58,32 +51,31 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
     viewModel.updateGridPedido()
   }
   
-  private fun desmarcaPedidoLink() {
+  override fun desmarcaPedidoLink() {
     viewModel.desmarcaVendedor()
   }
   
-  private fun marcaLink(pedidoLink: PedidoLink) {
+  override fun marcaLink(pedidoLink: PedidoLink) {
     viewModel.marcaPedido(pedidoLink)
   }
   
-  private fun uploadFile(inputStream: InputStream) {
+  override fun uploadFile(inputStream: InputStream) {
     viewModel.uploadFile(inputStream)
   }
   
-  private fun desmarcaPedido() {
+  override fun desmarcaPedido() {
     if(itensSelecionadoPendente().isEmpty()) showError("Nenhum pedido foi selecionado")
     viewModel.desmarcaPedido()
   }
   
-  private fun marcaVendedor(pedido: PedidoLink) {
+  override fun marcaVendedor(pedido: PedidoLink) {
     val form = FormVendedor()
-    val vendendor= CardVendendor(pedido.vendedor ?: "Não encontrado", "")
+    val vendendor = SenhaVendendor(pedido.vendedor ?: "Não encontrado", "")
     form.binder.bean = vendendor
-    showForm("Senha do vendedor", form){
+    showForm("Senha do vendedor", form) {
       val senha = form.binder.bean.senha ?: "#######"
       viewModel.marcaVendedor(pedido, senha)
     }
-    
   }
   
   override fun itensSelecionadoPedido(): List<PedidoLink> {
@@ -133,24 +125,24 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
     const val TAB_PEDIDO: String = "Pedido"
     const val TAB_LINK: String = "Link"
     const val TAB_PENDENTE: String = "Pendente"
-    const val TAB_FINALIZADO: String = "Finalziado"
-    const val TAB_FATURADO: String = "Faturado"
+    const val TAB_FINALIZADO: String = "Finalzar"
+    const val TAB_FATURADO: String = "Faturar"
   }
 }
 
 class FormVendedor: FormLayout() {
-  val binder = Binder<CardVendendor>(CardVendendor::class.java)
+  val binder = Binder<SenhaVendendor>(SenhaVendendor::class.java)
   
   init {
     textField("Nome") {
       isEnabled = false
       addThemeVariants(LUMO_SMALL)
-      bind(binder).bind(CardVendendor::nome)
+      bind(binder).bind(SenhaVendendor::nome)
     }
   
-    passwordField ("Nome") {
+    passwordField("Senha") {
       addThemeVariants(LUMO_SMALL)
-      bind(binder).bind(CardVendendor::senha)
+      bind(binder).bind(SenhaVendendor::senha)
     }
   }
 }
