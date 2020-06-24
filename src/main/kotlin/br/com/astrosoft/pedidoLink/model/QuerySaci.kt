@@ -38,7 +38,7 @@ class QuerySaci: QueryDB(driver, url, username, password) {
     val sql = "/sqlSaci/pedidoLink.sql"
     return query(sql, PedidoLink::class) {
       addOptionalParameter("storeno", storeno)
-      addOptionalParameter("data", 20200620)
+      addOptionalParameter("data", 20200608)
     }
   }
   
@@ -65,6 +65,15 @@ class QuerySaci: QueryDB(driver, url, username, password) {
           addOptionalParameter(coluna, value)
         }
       }
+    }
+  }
+  
+  fun marcaVendedor(loja: Int, numPedido: Int, marcaNova: String) {
+    val sql = "/sqlSaci/marcaVendedor.sql"
+    script(sql) {
+      addParameter("storeno", loja)
+      addParameter("ordno", numPedido)
+      addParameter("marca", marcaNova)
     }
   }
   

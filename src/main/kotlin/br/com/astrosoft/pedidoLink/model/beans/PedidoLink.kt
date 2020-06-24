@@ -24,13 +24,15 @@ data class PedidoLink(val loja: Int,
                       val nota: String,
                       val valorFrete: Double?,
                       val total: Double?,
-                      val valorLink : Double,
+                      val valorLink: Double,
                       val cartao: String?,
                       val whatsapp: String?,
                       val cliente: String?,
                       val vendedor: String?,
                       val status: Int,
-                      val confirmado: String) {
+                      val confirmado: String,
+                      val senhaVendedor: String,
+                      val marca: String) {
   val notaFiscal: String
     get() = numeroNota(nfnoNota, nfseNota)
   
@@ -46,15 +48,28 @@ data class PedidoLink(val loja: Int,
     saci.marcaLink(loja, numPedido, data, hora)
   }
   
+  fun marcaVendedor(marcaNova: String) {
+    saci.marcaVendedor(loja, numPedido, marcaNova)
+  }
+  
   companion object {
     val storeno: Int by lazy {
       UserSaci.findUser(AppConfig.userSaci?.login)?.storeno ?: 0
     }
     
-    fun listaGeral(): List<PedidoLink> {
+    fun listaPedido(): List<PedidoLink> {
+      val list = saci.listaPedidoLink(storeno)
+      val statusList = listOf(1, 8)
+      //val statusList = listOf(0, 1, 2, 3, 4, 5, 6, 7, 8)
+      return list.filter {
+        it.notaFiscal == "" && it.dataLink == null && statusList.contains(it.status) && it.marca == ""
+      }
+    }
+    
+    fun listaLink(): List<PedidoLink> {
       val list = saci.listaPedidoLink(storeno)
       return list.filter {
-        it.notaFiscal == "" && it.dataLink == null && listOf(1, 8).contains(it.status)
+        it.notaFiscal == "" && it.dataLink == null && listOf(1, 8).contains(it.status) && it.marca != ""
       }
     }
     
