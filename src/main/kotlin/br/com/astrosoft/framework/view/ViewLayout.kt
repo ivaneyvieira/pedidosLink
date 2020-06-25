@@ -49,6 +49,7 @@ import org.claspina.confirmdialog.ButtonOption.caption
 import org.claspina.confirmdialog.ButtonOption.closeOnClick
 import org.claspina.confirmdialog.ButtonType.OK
 import org.claspina.confirmdialog.ConfirmDialog
+import org.vaadin.olli.ClipboardHelper
 import java.sql.Time
 import java.text.DecimalFormat
 import java.time.LocalDate
@@ -273,7 +274,6 @@ fun <T> (@VaadinDsl Grid<T>).addColumnDouble(property: KProperty1<T, Double?>,
 
 fun <T> (@VaadinDsl Grid<T>).addColumnButton(iconButton: VaadinIcon,
                                              execButton: (T) -> Unit = {},
-                                             blockButton: (@VaadinDsl Button).(T) -> Unit = {},
                                              block: (@VaadinDsl Grid.Column<T>).() -> Unit = {}): Grid.Column<T> {
   return addComponentColumn {bean ->
     Button().apply {
@@ -282,8 +282,27 @@ fun <T> (@VaadinDsl Grid<T>).addColumnButton(iconButton: VaadinIcon,
       onLeftClick {
         execButton(bean)
       }
-      this.blockButton(bean)
     }
+  }.apply {
+    this.width = "4em"
+    this.center()
+    this.block()
+  }
+}
+
+fun <T> (@VaadinDsl Grid<T>).addColumnButtonClipBoard(iconButton: VaadinIcon,
+                                                      execButton: (T) -> Unit = {},
+                                                      textToClipBoard: T.() -> String,
+                                                      block: (@VaadinDsl Grid.Column<T>).() -> Unit = {}): Grid.Column<T> {
+  return addComponentColumn {bean ->
+    val button = Button().apply {
+      icon = iconButton.create()
+      addThemeVariants(LUMO_SMALL)
+      onLeftClick {
+        execButton(bean)
+      }
+    }
+    ClipboardHelper(textToClipBoard(bean), button)
   }.apply {
     this.width = "4em"
     this.center()

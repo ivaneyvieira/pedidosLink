@@ -2,8 +2,10 @@ package br.com.astrosoft.pedidoLink.view.main
 
 import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.framework.view.addColumnButton
+import br.com.astrosoft.framework.view.addColumnButtonClipBoard
 import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroPendente
+import br.com.astrosoft.pedidoLink.viewmodel.IPedidoLinkView
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.onLeftClick
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
@@ -20,12 +22,9 @@ import org.vaadin.olli.ClipboardHelper
 import java.io.InputStream
 import java.time.LocalDate
 
-class PainelGridPendente(val event: IEventGridPendente, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(blockUpdate) {
+class PainelGridPendente(view : IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(view, blockUpdate) {
   override fun Grid<PedidoLink>.gridConfig() {
-    addThemeVariants(LUMO_COMPACT, LUMO_COLUMN_BORDERS, LUMO_ROW_STRIPES)
-    addColumnButton(VaadinIcon.CLIPBOARD, {}, {
-      ClipboardHelper(it.nota, this)
-    })
+    addColumnButtonClipBoard(VaadinIcon.CLIPBOARD, textToClipBoard = {noteClipBoard})
     colLoja()
     colnumPedido()
     colDataPedido()
@@ -51,7 +50,7 @@ class PainelGridPendente(val event: IEventGridPendente, blockUpdate: () -> Unit)
       button("Desmarca Link") {
         icon = VaadinIcon.CHECK_CIRCLE_O.create()
         addThemeVariants(LUMO_SMALL)
-        onLeftClick {event.desmarcaPedido()}
+        onLeftClick {view.desmarcaPedido()}
       }
       edtPedido = edtPedido() {
         addValueChangeListener {blockUpdate()}
@@ -63,7 +62,7 @@ class PainelGridPendente(val event: IEventGridPendente, blockUpdate: () -> Unit)
       val upload = Upload(buffer)
       add(upload)
       upload.addSucceededListener {
-        event.uploadFile(buffer.inputStream)
+        view.uploadFile(buffer.inputStream)
       }
     }
     
@@ -72,7 +71,3 @@ class PainelGridPendente(val event: IEventGridPendente, blockUpdate: () -> Unit)
   }
 }
 
-interface IEventGridPendente {
-  fun desmarcaPedido()
-  fun uploadFile(inputStream: InputStream)
-}

@@ -146,6 +146,12 @@ interface IPedidoLinkView: IView {
   val filtroPendente: IFiltroPendente
   val filtroFinalizar: IFiltroFinalizar
   val filtroFaturar: IFiltroFaturar
+  //
+  fun marcaLink(pedido: PedidoLink)
+  fun desmarcaPedidoLink()
+  fun marcaVendedor(pedidoLink: PedidoLink)
+  fun desmarcaPedido()
+  fun uploadFile(inputStream: InputStream)
 }
 
 data class SenhaVendendor(var nome: String, var senha: String?)
