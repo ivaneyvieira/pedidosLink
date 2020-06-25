@@ -32,9 +32,9 @@ class PainelGridLink(val event: IEventGridLink, blockUpdate: () -> Unit): Painel
     colMetodo()
     colCartao()
     colWhatsapp()
-    colUsername()
-    colCliente()
     colVendedor()
+    colCliente()
+    colUsername()
   }
   
   override fun filterBar() = FilterBarPedido()

@@ -36,9 +36,9 @@ class PainelGridPendente(val event: IEventGridPendente, blockUpdate: () -> Unit)
     colMetodo()
     colCartao()
     colWhatsapp()
-    colUsername()
-    colCliente()
     colVendedor()
+    colCliente()
+    colUsername()
   }
   
   override fun filterBar() = FilterBarPendente()
