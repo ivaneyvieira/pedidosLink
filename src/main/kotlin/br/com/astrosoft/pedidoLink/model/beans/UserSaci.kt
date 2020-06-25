@@ -32,7 +32,7 @@ class UserSaci : IUser {
   fun bitAcesso(): Int {
     val ativoSum = if(ativo) 2.pow(9) else 0
     val bits = findUser(login)?.bitAcesso ?: 0
-    return ativoSum or bits
+    return ativoSum and bits
   }
   
   companion object {
