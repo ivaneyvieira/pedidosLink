@@ -81,7 +81,7 @@ fun Grid<PedidoLink>.colTotal() = addColumnDouble(PedidoLink::total) {
 }
 
 fun Grid<PedidoLink>.colValorLink() = addColumnDouble(PedidoLink::valorLink) {
-  setHeader("Valor Link")
+  setHeader("Valor TEF")
 }
 
 fun Grid<PedidoLink>.colCartao() = addColumnString(PedidoLink::cartao) {

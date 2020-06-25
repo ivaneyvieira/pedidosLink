@@ -20,6 +20,7 @@ class PainelGridFinalizar(view : IPedidoLinkView, blockUpdate: () -> Unit): Pain
     colHoraPedido()
     colValorFrete()
     colTotal()
+    colValorLink()
     colMetodo()
     colCartao()
     colAutorizadora()
