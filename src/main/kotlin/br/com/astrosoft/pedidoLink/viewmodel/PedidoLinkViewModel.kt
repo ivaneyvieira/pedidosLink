@@ -46,24 +46,24 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
   }
   
   fun updateGridFinalizado() {
-    view.updateGridFinalizado(listFinalizado())
+    view.updateGridFinalizar(listFinalizado())
   }
   
   private fun listFinalizado(): List<PedidoLink> {
-    val filtro = view.filtroFinalizado
-    return PedidoLink.listaFinalizado()
+    val filtro = view.filtroFinalizar
+    return PedidoLink.listaFinalizar()
       .filter {
         (it.dataPedido == filtro.data() || filtro.data() == null) && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
       }
   }
   
-  fun updateGridFaturado() {
-    view.updateGridFaturado(listFaturado())
+  fun updateGridFaturar() {
+    view.updateGridFaturar(listFaturar())
   }
   
-  private fun listFaturado(): List<PedidoLink> {
-    val filtro = view.filtroFaturado
-    return PedidoLink.listaFaturado()
+  private fun listFaturar(): List<PedidoLink> {
+    val filtro = view.filtroFaturar
+    return PedidoLink.listaFaturar()
       .filter {
         (it.dataPedido == filtro.data() || filtro.data() == null) && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
       }
@@ -71,7 +71,7 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
   
   fun marcaPedido(pedido: PedidoLink?) = exec {
     pedido?.marcaHorario(LocalDate.now(), LocalTime.now())
-    updateGridPedido()
+    updateGridLink()
   }
   
   fun desmarcaPedido() = exec {
@@ -120,12 +120,12 @@ interface IFiltroPendente {
   fun data(): LocalDate?
 }
 
-interface IFiltroFinalizado {
+interface IFiltroFinalizar {
   fun numPedido(): Int
   fun data(): LocalDate?
 }
 
-interface IFiltroFaturado {
+interface IFiltroFaturar {
   fun numPedido(): Int
   fun data(): LocalDate?
 }
@@ -134,8 +134,8 @@ interface IPedidoLinkView: IView {
   fun updateGridPedido(itens: List<PedidoLink>)
   fun updateGridLink(itens: List<PedidoLink>)
   fun updateGridPendente(itens: List<PedidoLink>)
-  fun updateGridFinalizado(itens: List<PedidoLink>)
-  fun updateGridFaturado(itens: List<PedidoLink>)
+  fun updateGridFinalizar(itens: List<PedidoLink>)
+  fun updateGridFaturar(itens: List<PedidoLink>)
   
   fun itensSelecionadoPedido(): List<PedidoLink>
   fun itensSelecionadoLink(): List<PedidoLink>
@@ -144,8 +144,8 @@ interface IPedidoLinkView: IView {
   val filtroPedido: IFiltroPedido
   val filtroLink: IFiltroLink
   val filtroPendente: IFiltroPendente
-  val filtroFinalizado: IFiltroFinalizado
-  val filtroFaturado: IFiltroFaturado
+  val filtroFinalizar: IFiltroFinalizar
+  val filtroFaturar: IFiltroFaturar
 }
 
-data class CardVendendor(var nome: String, var senha: String?)
+data class SenhaVendendor(var nome: String, var senha: String?)
