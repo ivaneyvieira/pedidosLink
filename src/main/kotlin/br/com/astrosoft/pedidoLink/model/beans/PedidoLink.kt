@@ -32,7 +32,12 @@ data class PedidoLink(val loja: Int,
                       val status: Int,
                       val confirmado: String,
                       val senhaVendedor: String,
-                      val marca: String) {
+                      val marca: String,
+                      val parcelas: Int?,
+                      val autorizadora: String?,
+                      val autorizacao: String?,
+                      val nsuHost: String?,
+                      val dataTef: LocalDate?) {
   val notaFiscal: String
     get() = numeroNota(nfnoNota, nfseNota)
   
@@ -83,14 +88,14 @@ data class PedidoLink(val loja: Int,
       }
     }
     
-    fun listaFinalizado(): List<PedidoLink> {
+    fun listaFinalizar(): List<PedidoLink> {
       val list = saci.listaPedidoLink(storeno)
       return list.filter {
         it.dataLink != null && it.notaFiscal == "" && it.confirmado == "S"
       }
     }
     
-    fun listaFaturado(): List<PedidoLink> {
+    fun listaFaturar(): List<PedidoLink> {
       val list = saci.listaPedidoLink(storeno)
       return list.filter {
         it.notaFiscal != ""
