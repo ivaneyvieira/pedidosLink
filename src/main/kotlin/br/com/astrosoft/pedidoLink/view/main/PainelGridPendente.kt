@@ -9,6 +9,9 @@ import com.github.mvysny.karibudsl.v10.onLeftClick
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.datepicker.DatePicker
 import com.vaadin.flow.component.grid.Grid
+import com.vaadin.flow.component.grid.GridVariant.LUMO_COLUMN_BORDERS
+import com.vaadin.flow.component.grid.GridVariant.LUMO_COMPACT
+import com.vaadin.flow.component.grid.GridVariant.LUMO_ROW_STRIPES
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.upload.Upload
@@ -19,10 +22,10 @@ import java.time.LocalDate
 
 class PainelGridPendente(val event: IEventGridPendente, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(blockUpdate) {
   override fun Grid<PedidoLink>.gridConfig() {
+    addThemeVariants(LUMO_COMPACT, LUMO_COLUMN_BORDERS, LUMO_ROW_STRIPES)
     addColumnButton(VaadinIcon.CLIPBOARD, {}, {
       ClipboardHelper(it.nota, this)
     })
-    
     colLoja()
     colnumPedido()
     colDataPedido()

@@ -88,14 +88,14 @@ data class PedidoLink(val loja: Int,
       }
     }
     
-    fun listaFinalizado(): List<PedidoLink> {
+    fun listaFinalizar(): List<PedidoLink> {
       val list = saci.listaPedidoLink(storeno)
       return list.filter {
         it.dataLink != null && it.notaFiscal == "" && it.confirmado == "S"
       }
     }
     
-    fun listaFaturado(): List<PedidoLink> {
+    fun listaFaturar(): List<PedidoLink> {
       val list = saci.listaPedidoLink(storeno)
       return list.filter {
         it.notaFiscal != ""

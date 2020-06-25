@@ -19,10 +19,12 @@ import com.vaadin.flow.data.value.ValueChangeMode
 
 fun Grid<PedidoLink>.colLoja() = addColumnInt(PedidoLink::loja) {
   setHeader("Lj")
+  width = "4em"
 }
 
 fun Grid<PedidoLink>.colnumPedido() = addColumnInt(PedidoLink::numPedido) {
   setHeader("Pedido")
+  width = "7em"
 }
 
 fun Grid<PedidoLink>.colDataPedido() = addColumnLocalDate(PedidoLink::dataPedido) {
@@ -35,6 +37,7 @@ fun Grid<PedidoLink>.colHoraPedido() = addColumnLocalTime(PedidoLink::horaPedido
 
 fun Grid<PedidoLink>.colMetodo() = addColumnInt(PedidoLink::metodo) {
   setHeader("Mét")
+  width = "5em"
 }
 
 fun Grid<PedidoLink>.colNotaFiscal() = addColumnString(PedidoLink::notaFiscal) {
@@ -46,7 +49,7 @@ fun Grid<PedidoLink>.colDataNota() = addColumnLocalDate(PedidoLink::dataNota) {
 }
 
 fun Grid<PedidoLink>.colHoraNota() = addColumnLocalTime(PedidoLink::horaNota) {
-  setHeader("Hora NF")
+  setHeader("Hr NF")
 }
 
 fun Grid<PedidoLink>.colDataLink() = addColumnLocalDate(PedidoLink::dataLink) {
@@ -54,7 +57,7 @@ fun Grid<PedidoLink>.colDataLink() = addColumnLocalDate(PedidoLink::dataLink) {
 }
 
 fun Grid<PedidoLink>.colHoraLink() = addColumnLocalTime(PedidoLink::horaLink) {
-  setHeader("Hora Link")
+  setHeader("Hr Link")
 }
 
 fun Grid<PedidoLink>.colUsername() = addColumnString(PedidoLink::username) {
@@ -99,6 +102,7 @@ fun Grid<PedidoLink>.colVendedor() = addColumnString(PedidoLink::vendedor) {
 
 fun Grid<PedidoLink>.colParcelas() = addColumnInt(PedidoLink::parcelas) {
   setHeader("Parc")
+  width = "4em"
 }
 
 fun Grid<PedidoLink>.colAutorizadora() = addColumnString(PedidoLink::autorizadora) {

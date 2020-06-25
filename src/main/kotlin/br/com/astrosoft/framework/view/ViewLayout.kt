@@ -169,7 +169,7 @@ fun <T> (@VaadinDsl Grid<T>).addColumnBool(property: KProperty1<T, Boolean?>,
     val value2 = property.get(o2) ?: false
     value1.compareTo(value2)
   }
-  column.isAutoWidth = true
+  column.width = "5em"
   column.center()
   column.block()
   return column
@@ -178,6 +178,7 @@ fun <T> (@VaadinDsl Grid<T>).addColumnBool(property: KProperty1<T, Boolean?>,
 fun <T> (@VaadinDsl Grid<T>).addColumnLocalDate(property: KProperty1<T, LocalDate?>,
                                                 block: (@VaadinDsl Grid.Column<T>).() -> Unit = {}): Grid.Column<T> {
   val column = this.addColumnFor(property, renderer = LocalDateRenderer(property, "dd/MM/yyyy"))
+  //column.width = "8em"
   column.isAutoWidth = true
   column.left()
   column.setComparator {a, b ->
@@ -206,7 +207,7 @@ fun <T> (@VaadinDsl Grid<T>).addColumnDate(property: KProperty1<T, Date?>,
     val value2 = property.get(o2) ?: Date(0)
     value1.compareTo(value2)
   }
-  column.isAutoWidth = true
+  column.width = "10em"
   column.left()
   
   column.block()
@@ -225,7 +226,7 @@ fun <T> (@VaadinDsl Grid<T>).addColumnLocalTime(property: KProperty1<T, LocalTim
     val value2 = property.get(o2) ?: LocalTime.MIN
     value1.compareTo(value2)
   }
-  column.isAutoWidth = true
+  column.width = "5em"
   column.left()
   column.block()
   return column
@@ -242,7 +243,7 @@ fun <T> (@VaadinDsl Grid<T>).addColumnTime(property: KProperty1<T, Time?>,
     val value2 = property.get(o2) ?: Time(0)
     value1.compareTo(value2)
   }
-  column.isAutoWidth = true
+  column.width = "5em"
   column.left()
   column.setComparator {a, b ->
     val dataA = property.get(a) ?: Time(0)
@@ -264,7 +265,7 @@ fun <T> (@VaadinDsl Grid<T>).addColumnDouble(property: KProperty1<T, Double?>,
     value1.compareTo(value2)
   }
   column.sortProperty = property
-  column.isAutoWidth = true
+  column.width = "6em"
   column.right()
   column.block()
   return column
@@ -284,7 +285,7 @@ fun <T> (@VaadinDsl Grid<T>).addColumnButton(iconButton: VaadinIcon,
       this.blockButton(bean)
     }
   }.apply {
-    this.isAutoWidth = true
+    this.width = "5em"
     this.width = "10px"
     this.block()
   }
@@ -298,7 +299,7 @@ fun <T> (@VaadinDsl Grid<T>).addColumnInt(property: KProperty1<T, Int?>,
     val value2 = property.get(o2) ?: 0
     value1.compareTo(value2)
   }
-  column.isAutoWidth = true
+  column.width = "7em"
   column.right()
   column.block()
   return column
