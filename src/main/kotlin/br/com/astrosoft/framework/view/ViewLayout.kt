@@ -285,8 +285,8 @@ fun <T> (@VaadinDsl Grid<T>).addColumnButton(iconButton: VaadinIcon,
       this.blockButton(bean)
     }
   }.apply {
-    this.width = "5em"
-    this.width = "10px"
+    this.width = "4em"
+    this.center()
     this.block()
   }
 }

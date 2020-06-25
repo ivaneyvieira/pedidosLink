@@ -26,9 +26,9 @@ class PainelGridPedido(val event: IEventGridPedido, blockUpdate: () -> Unit): Pa
     colMetodo()
     colCartao()
     colWhatsapp()
-    colUsername()
-    colCliente()
     colVendedor()
+    colCliente()
+    colUsername()
   }
   
   override fun filterBar() = FilterBarPedido()
