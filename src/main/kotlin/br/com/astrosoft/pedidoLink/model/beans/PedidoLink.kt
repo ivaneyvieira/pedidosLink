@@ -64,20 +64,21 @@ data class PedidoLink(val loja: Int,
     val storeno: Int by lazy {
       UserSaci.findUser(AppConfig.userSaci?.login)?.storeno ?: 0
     }
+  
+    private val  statusValidosPedido = listOf(1, 2, 8)
     
     fun listaPedido(): List<PedidoLink> {
       val list = saci.listaPedidoLink(storeno)
-      val statusList = listOf(1, 8)
       //val statusList = listOf(0, 1, 2, 3, 4, 5, 6, 7, 8)
       return list.filter {
-        it.notaFiscal == "" && it.dataLink == null && statusList.contains(it.status) && it.marca == ""
+        it.notaFiscal == "" && it.dataLink == null && statusValidosPedido.contains(it.status) && it.marca == ""
       }
     }
     
     fun listaLink(): List<PedidoLink> {
       val list = saci.listaPedidoLink(storeno)
       return list.filter {
-        it.notaFiscal == "" && it.dataLink == null && listOf(1, 8).contains(it.status) && it.marca != ""
+        it.notaFiscal == "" && it.dataLink == null && statusValidosPedido.contains(it.status) && it.marca != ""
       }
     }
     

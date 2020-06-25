@@ -2,8 +2,10 @@ package br.com.astrosoft.pedidoLink.view.main
 
 import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.framework.view.addColumnButton
+import br.com.astrosoft.framework.view.addColumnButtonClipBoard
 import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroLink
+import br.com.astrosoft.pedidoLink.viewmodel.IPedidoLinkView
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.onLeftClick
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
@@ -17,12 +19,9 @@ import com.vaadin.flow.component.textfield.IntegerField
 import org.vaadin.olli.ClipboardHelper
 import java.time.LocalDate
 
-class PainelGridLink(val event: IEventGridLink, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(blockUpdate) {
+class PainelGridLink(view: IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(view, blockUpdate) {
   override fun Grid<PedidoLink>.gridConfig() {
-    addThemeVariants(LUMO_COMPACT, LUMO_COLUMN_BORDERS, LUMO_ROW_STRIPES)
-    addColumnButton(VaadinIcon.ARROW_FORWARD, event::marcaLink, {
-      ClipboardHelper(it.nota, this)
-    })
+    addColumnButtonClipBoard(VaadinIcon.ARROW_FORWARD, view::marcaLink, {noteClipBoard})
     colLoja()
     colnumPedido()
     colDataPedido()
@@ -47,7 +46,7 @@ class PainelGridLink(val event: IEventGridLink, blockUpdate: () -> Unit): Painel
       button("Desmarca Link") {
         icon = VaadinIcon.CHECK_CIRCLE_O.create()
         addThemeVariants(LUMO_SMALL)
-        onLeftClick {event.desmarcaPedidoLink()}
+        onLeftClick {view.desmarcaPedidoLink()}
       }
       edtPedido = edtPedido() {
         addValueChangeListener {blockUpdate()}
@@ -62,9 +61,4 @@ class PainelGridLink(val event: IEventGridLink, blockUpdate: () -> Unit): Painel
       return edtData.value
     }
   }
-}
-
-interface IEventGridLink {
-  fun marcaLink(pedido: PedidoLink)
-  fun desmarcaPedidoLink()
 }

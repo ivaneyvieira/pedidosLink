@@ -2,8 +2,10 @@ package br.com.astrosoft.pedidoLink.view.main
 
 import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.framework.view.addColumnButton
+import br.com.astrosoft.framework.view.addColumnButtonClipBoard
 import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroPedido
+import br.com.astrosoft.pedidoLink.viewmodel.IPedidoLinkView
 import com.vaadin.flow.component.datepicker.DatePicker
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.grid.GridVariant.LUMO_COLUMN_BORDERS
@@ -11,12 +13,13 @@ import com.vaadin.flow.component.grid.GridVariant.LUMO_COMPACT
 import com.vaadin.flow.component.grid.GridVariant.LUMO_ROW_STRIPES
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.IntegerField
+import org.springframework.beans.factory.annotation.Autowired
 import java.time.LocalDate
 
-class PainelGridPedido(val event: IEventGridPedido, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(blockUpdate) {
+class PainelGridPedido(view : IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(view, blockUpdate) {
+
   override fun Grid<PedidoLink>.gridConfig() {
-    addThemeVariants(LUMO_COMPACT, LUMO_COLUMN_BORDERS, LUMO_ROW_STRIPES)
-    addColumnButton(VaadinIcon.ARROW_FORWARD, event::marcaVendedor)
+    addColumnButtonClipBoard(VaadinIcon.ARROW_FORWARD, view::marcaVendedor, {noteClipBoard})
     colLoja()
     colnumPedido()
     colDataPedido()
@@ -53,6 +56,3 @@ class PainelGridPedido(val event: IEventGridPedido, blockUpdate: () -> Unit): Pa
   }
 }
 
-interface IEventGridPedido {
-  fun marcaVendedor(pedidoLink: PedidoLink)
-}

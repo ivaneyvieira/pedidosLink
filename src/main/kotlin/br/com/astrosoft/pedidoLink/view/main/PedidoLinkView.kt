@@ -28,13 +28,12 @@ import java.io.InputStream
 @Route(layout = PedidoLinkLayout::class)
 @PageTitle(AppConfig.title)
 @HtmlImport("frontend://styles/shared-styles.html")
-class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView, IEventGridPedido, IEventGridLink,
-                      IEventGridPendente {
+class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
   private val gridPedido = PainelGridPedido(this) {viewModel.updateGridPedido()}
   private val gridLink = PainelGridLink(this) {viewModel.updateGridLink()}
   private val gridPendente = PainelGridPendente(this) {viewModel.updateGridPendente()}
-  private val gridFinalizar = PainelGridFinalizar() {viewModel.updateGridFinalizado()}
-  private val gridFaturar = PainelGridFaturado {viewModel.updateGridFaturar()}
+  private val gridFinalizar = PainelGridFinalizar(this) {viewModel.updateGridFinalizado()}
+  private val gridFaturar = PainelGridFaturado(this) {viewModel.updateGridFaturar()}
   override val viewModel: PedidoLinkViewModel = PedidoLinkViewModel(this)
   
   override fun isAccept() = true
