@@ -147,7 +147,7 @@ interface IPedidoLinkView: IView {
   val filtroFinalizar: IFiltroFinalizar
   val filtroFaturar: IFiltroFaturar
   //
-  fun marcaLink(pedido: PedidoLink)
+  fun marcaLink(pedidoLink: PedidoLink)
   fun desmarcaPedidoLink()
   fun marcaVendedor(pedidoLink: PedidoLink)
   fun desmarcaPedido()
