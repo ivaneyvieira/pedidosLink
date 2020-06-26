@@ -6,13 +6,10 @@ import br.com.astrosoft.pedidoLink.viewmodel.IFiltroFinalizar
 import br.com.astrosoft.pedidoLink.viewmodel.IPedidoLinkView
 import com.vaadin.flow.component.datepicker.DatePicker
 import com.vaadin.flow.component.grid.Grid
-import com.vaadin.flow.component.grid.GridVariant.LUMO_COLUMN_BORDERS
-import com.vaadin.flow.component.grid.GridVariant.LUMO_COMPACT
-import com.vaadin.flow.component.grid.GridVariant.LUMO_ROW_STRIPES
 import com.vaadin.flow.component.textfield.IntegerField
 import java.time.LocalDate
 
-class PainelGridFinalizar(view : IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(view, blockUpdate) {
+class PainelGridFinalizado(view : IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(view, blockUpdate) {
   override fun Grid<PedidoLink>.gridConfig() {
     colLoja()
     colnumPedido()

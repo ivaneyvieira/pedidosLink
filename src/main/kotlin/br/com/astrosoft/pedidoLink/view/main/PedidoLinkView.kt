@@ -4,6 +4,7 @@ import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.view.ViewLayout
 import br.com.astrosoft.framework.view.tabGrid
 import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
+import br.com.astrosoft.pedidoLink.model.beans.UserSaci
 import br.com.astrosoft.pedidoLink.view.layout.PedidoLinkLayout
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroFaturar
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroFinalizar
@@ -32,7 +33,7 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
   private val gridPedido = PainelGridPedido(this) {viewModel.updateGridPedido()}
   private val gridLink = PainelGridLink(this) {viewModel.updateGridLink()}
   private val gridPendente = PainelGridPendente(this) {viewModel.updateGridPendente()}
-  private val gridFinalizar = PainelGridFinalizar(this) {viewModel.updateGridFinalizado()}
+  private val gridFinalizar = PainelGridFinalizado(this) {viewModel.updateGridFinalizado()}
   private val gridFaturar = PainelGridFaturado(this) {viewModel.updateGridFaturar()}
   override val viewModel: PedidoLinkViewModel = PedidoLinkViewModel(this)
   
@@ -40,12 +41,13 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
   
   init {
     tabSheet {
+      val user = AppConfig.userSaci as UserSaci
       setSizeFull()
-      tabGrid(TAB_PEDIDO, gridPedido)
-      tabGrid(TAB_LINK, gridLink)
-      tabGrid(TAB_PENDENTE, gridPendente)
-      tabGrid(TAB_FINALIZADO, gridFinalizar)
-      tabGrid(TAB_FATURADO, gridFaturar)
+      if(user.acl_pedido) tabGrid(TAB_PEDIDO, gridPedido)
+      if(user.acl_link) tabGrid(TAB_LINK, gridLink)
+      if(user.acl_pendente) tabGrid(TAB_PENDENTE, gridPendente)
+      if(user.acl_finalizar) tabGrid(TAB_FINALIZAR, gridFinalizar)
+      if(user.acl_faturado) tabGrid(TAB_FATURADO, gridFaturar)
     }
     viewModel.updateGridPedido()
   }
@@ -67,13 +69,13 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
     viewModel.desmarcaPedido()
   }
   
-  override fun marcaVendedor(pedido: PedidoLink) {
+  override fun marcaVendedor(pedidoLink: PedidoLink) {
     val form = FormVendedor()
-    val vendendor = SenhaVendendor(pedido.vendedor ?: "Não encontrado", "")
+    val vendendor = SenhaVendendor(pedidoLink.vendedor ?: "Não encontrado", "")
     form.binder.bean = vendendor
     showForm("Senha do vendedor", form) {
       val senha = form.binder.bean.senha ?: "#######"
-      viewModel.marcaVendedor(pedido, senha)
+      viewModel.marcaVendedor(pedidoLink, senha)
     }
   }
   
@@ -124,8 +126,8 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
     const val TAB_PEDIDO: String = "Pedido"
     const val TAB_LINK: String = "Link"
     const val TAB_PENDENTE: String = "Pendente"
-    const val TAB_FINALIZADO: String = "Finalzar"
-    const val TAB_FATURADO: String = "Faturar"
+    const val TAB_FINALIZAR: String = "Finalzar"
+    const val TAB_FATURADO: String = "Faturado"
   }
 }
 
@@ -138,7 +140,7 @@ class FormVendedor: FormLayout() {
       addThemeVariants(LUMO_SMALL)
       bind(binder).bind(SenhaVendendor::nome)
     }
-  
+    
     passwordField("Senha") {
       addThemeVariants(LUMO_SMALL)
       bind(binder).bind(SenhaVendendor::senha)

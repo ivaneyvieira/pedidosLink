@@ -9,6 +9,7 @@ import br.com.astrosoft.pedidoLink.viewmodel.IUsuarioView
 import br.com.astrosoft.pedidoLink.viewmodel.UsuarioViewModel
 import com.github.mvysny.karibudsl.v10.alignSelf
 import com.github.mvysny.karibudsl.v10.button
+import com.github.mvysny.karibudsl.v10.checkBox
 import com.github.mvysny.karibudsl.v10.formLayout
 import com.github.mvysny.karibudsl.v10.getColumnBy
 import com.github.mvysny.karibudsl.v10.horizontalLayout
@@ -23,7 +24,9 @@ import com.vaadin.flow.component.button.ButtonVariant.LUMO_ERROR
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_PRIMARY
 import com.vaadin.flow.component.grid.ColumnTextAlign
 import com.vaadin.flow.component.grid.Grid
+import com.vaadin.flow.component.grid.GridVariant.LUMO_COLUMN_BORDERS
 import com.vaadin.flow.component.grid.GridVariant.LUMO_COMPACT
+import com.vaadin.flow.component.grid.GridVariant.LUMO_ROW_STRIPES
 import com.vaadin.flow.component.icon.VaadinIcon.CHECK_CIRCLE_O
 import com.vaadin.flow.component.icon.VaadinIcon.CIRCLE_THIN
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.END
@@ -68,7 +71,7 @@ class UsuarioView: ViewLayout<UsuarioViewModel>(), IUsuarioView {
     crud.grid.getColumnBy(UserSaci::storeno)
       .setHeader("Loja")
   
-    crud.grid.addThemeVariants(LUMO_COMPACT)
+    crud.grid.addThemeVariants(LUMO_COMPACT, LUMO_ROW_STRIPES, LUMO_COLUMN_BORDERS)
   
     crud.crudFormFactory = UserCrudFormFactory(viewModel)
     crud.setSizeFull()
@@ -130,6 +133,23 @@ class UserCrudFormFactory(private val viewModel: UsuarioViewModel): AbstractCrud
             isReadOnly = true
             binder.bind(this, UserSaci::impressora.name)
           }
+        if(operation in listOf(ADD, READ, DELETE, UPDATE)) {
+          checkBox("Pedido") {
+            binder.bind(this, UserSaci::acl_pedido.name)
+          }
+          checkBox("Link") {
+            binder.bind(this, UserSaci::acl_link.name)
+          }
+          checkBox("Pendente") {
+            binder.bind(this, UserSaci::acl_pendente.name)
+          }
+          checkBox("Finalizar") {
+            binder.bind(this, UserSaci::acl_finalizar.name)
+          }
+          checkBox("Faturado") {
+            binder.bind(this, UserSaci::acl_faturado.name)
+          }
+        }
       }
       hr()
       horizontalLayout {
