@@ -33,15 +33,15 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
   private val gridPedido = PainelGridPedido(this) {viewModel.updateGridPedido()}
   private val gridLink = PainelGridLink(this) {viewModel.updateGridLink()}
   private val gridPendente = PainelGridPendente(this) {viewModel.updateGridPendente()}
-  private val gridFinalizar = PainelGridFinalizado(this) {viewModel.updateGridFinalizado()}
+  private val gridFinalizar = PainelGridFinalizado(this) {viewModel.updateGridFinalizar()}
   private val gridFaturar = PainelGridFaturado(this) {viewModel.updateGridFaturar()}
   override val viewModel: PedidoLinkViewModel = PedidoLinkViewModel(this)
   
   override fun isAccept() = true
   
   init {
+    val user = AppConfig.userSaci as UserSaci
     tabSheet {
-      val user = AppConfig.userSaci as UserSaci
       setSizeFull()
       if(user.acl_pedido) tabGrid(TAB_PEDIDO, gridPedido)
       if(user.acl_link) tabGrid(TAB_LINK, gridLink)
@@ -49,7 +49,13 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
       if(user.acl_finalizar) tabGrid(TAB_FINALIZAR, gridFinalizar)
       if(user.acl_faturado) tabGrid(TAB_FATURADO, gridFaturar)
     }
-    viewModel.updateGridPedido()
+    when {
+      user.acl_pedido    -> viewModel.updateGridPedido()
+      user.acl_link      -> viewModel.updateGridLink()
+      user.acl_pendente  -> viewModel.updateGridPendente()
+      user.acl_finalizar -> viewModel.updateGridFinalizar()
+      user.acl_faturado  -> viewModel.updateGridFaturar()
+    }
   }
   
   override fun desmarcaPedidoLink() {

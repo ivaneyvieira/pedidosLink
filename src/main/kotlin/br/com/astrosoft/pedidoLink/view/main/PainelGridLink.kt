@@ -26,7 +26,7 @@ class PainelGridLink(view: IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid
     colnumPedido()
     colDataPedido()
     //colHoraPedido()
-    colValorFrete()
+    //colValorFrete()
     colTotal()
     colMetodo()
     colCartao()
