@@ -24,7 +24,7 @@ class PainelGridPedido(view : IPedidoLinkView, blockUpdate: () -> Unit): PainelG
     colnumPedido()
     colDataPedido()
     //colHoraPedido()
-    colValorFrete()
+    //colValorFrete()
     colTotal()
     colMetodo()
     colCartao()

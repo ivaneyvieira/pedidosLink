@@ -9,12 +9,12 @@ import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.textfield.IntegerField
 import java.time.LocalDate
 
-class PainelGridFinalizado(view : IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(view, blockUpdate) {
+class PainelGridFinalizado(view: IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(view, blockUpdate) {
   override fun Grid<PedidoLink>.gridConfig() {
     colLoja()
     colnumPedido()
     colDataPedido()
-    colValorFrete()
+    //colValorFrete()
     colTotal()
     colValorLink()
     colMetodo()
@@ -45,6 +45,5 @@ class PainelGridFinalizado(view : IPedidoLinkView, blockUpdate: () -> Unit): Pai
     override fun numPedido(): Int = edtPedido.value ?: 0
     override fun data(): LocalDate? = edtData.value
   }
-
 }
 

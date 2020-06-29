@@ -45,7 +45,7 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
       }
   }
   
-  fun updateGridFinalizado() {
+  fun updateGridFinalizar() {
     view.updateGridFinalizar(listFinalizado())
   }
   
