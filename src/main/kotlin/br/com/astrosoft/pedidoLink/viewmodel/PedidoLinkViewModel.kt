@@ -19,7 +19,9 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
       .filter {
         (it.dataPedido == filtro.data() || filtro.data() == null)
         && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
-        && (it.vendedor?.startsWith(filtro.vendedor()) == true || filtro.vendedor() == "")
+        && (it.vendedor?.startsWith(filtro.vendedor()) == true
+            || it.empno?.toString() == filtro.vendedor()
+            || filtro.vendedor() == "")
       }
   }
   
@@ -33,7 +35,9 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
       .filter {
         (it.dataPedido == filtro.data() || filtro.data() == null)
         && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
-        && (it.vendedor?.startsWith(filtro.vendedor()) == true || filtro.vendedor() == "")
+        && (it.vendedor?.startsWith(filtro.vendedor()) == true
+            || it.empno?.toString() == filtro.vendedor()
+            || filtro.vendedor() == "")
       }
   }
   
@@ -47,7 +51,9 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
       .filter {
         (it.dataPedido == filtro.data() || filtro.data() == null)
         && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
-        && (it.vendedor?.startsWith(filtro.vendedor()) == true || filtro.vendedor() == "")
+        && (it.vendedor?.startsWith(filtro.vendedor()) == true
+            || it.empno?.toString() == filtro.vendedor()
+            || filtro.vendedor() == "")
       }
   }
   

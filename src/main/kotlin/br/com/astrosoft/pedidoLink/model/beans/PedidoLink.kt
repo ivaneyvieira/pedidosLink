@@ -28,6 +28,7 @@ data class PedidoLink(val loja: Int,
                       val cartao: String?,
                       val whatsapp: String?,
                       val cliente: String?,
+                      val empno: Int?,
                       val vendedor: String?,
                       val status: Int,
                       val confirmado: String,
@@ -64,8 +65,7 @@ data class PedidoLink(val loja: Int,
     val storeno: Int by lazy {
       UserSaci.findUser(AppConfig.userSaci?.login)?.storeno ?: 0
     }
-  
-    private val  statusValidosPedido = listOf(1, 2, 8)
+    private val statusValidosPedido = listOf(1, 2, 8)
     
     fun listaPedido(): List<PedidoLink> {
       val list = saci.listaPedidoLink(storeno)

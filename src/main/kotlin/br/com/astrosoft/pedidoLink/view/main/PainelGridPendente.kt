@@ -37,6 +37,7 @@ class PainelGridPendente(view : IPedidoLinkView, blockUpdate: () -> Unit): Paine
     colCartao()
     colWhatsapp()
     colVendedor()
+    colEmpno()
     colCliente()
     colUsername()
   }
