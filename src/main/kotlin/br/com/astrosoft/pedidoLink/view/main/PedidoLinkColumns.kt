@@ -98,6 +98,10 @@ fun Grid<PedidoLink>.colCliente() = addColumnString(PedidoLink::cliente) {
   setHeader("Cliente")
 }
 
+fun Grid<PedidoLink>.colEmpno() = addColumnInt(PedidoLink::empno) {
+  setHeader("Nº Vend")
+}
+
 fun Grid<PedidoLink>.colVendedor() = addColumnString(PedidoLink::vendedor) {
   setHeader("Vendedor")
 }

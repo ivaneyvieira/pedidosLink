@@ -27,6 +27,7 @@ class PainelGridLink(view: IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid
     colMetodo()
     colCartao()
     colWhatsapp()
+    colEmpno()
     colVendedor()
     colCliente()
     colUsername()
