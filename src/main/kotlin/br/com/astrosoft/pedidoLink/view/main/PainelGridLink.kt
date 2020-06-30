@@ -1,7 +1,6 @@
 package br.com.astrosoft.pedidoLink.view.main
 
 import br.com.astrosoft.framework.view.PainelGrid
-import br.com.astrosoft.framework.view.addColumnButton
 import br.com.astrosoft.framework.view.addColumnButtonClipBoard
 import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroLink
@@ -11,12 +10,9 @@ import com.github.mvysny.karibudsl.v10.onLeftClick
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.datepicker.DatePicker
 import com.vaadin.flow.component.grid.Grid
-import com.vaadin.flow.component.grid.GridVariant.LUMO_COLUMN_BORDERS
-import com.vaadin.flow.component.grid.GridVariant.LUMO_COMPACT
-import com.vaadin.flow.component.grid.GridVariant.LUMO_ROW_STRIPES
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.IntegerField
-import org.vaadin.olli.ClipboardHelper
+import com.vaadin.flow.component.textfield.TextField
 import java.time.LocalDate
 
 class PainelGridLink(view: IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(view, blockUpdate) {
@@ -41,6 +37,7 @@ class PainelGridLink(view: IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid
   inner class FilterBarPedido: FilterBar(), IFiltroLink {
     lateinit var edtPedido: IntegerField
     lateinit var edtData: DatePicker
+    lateinit var edtVendedor: TextField
     
     override fun FilterBar.contentBlock() {
       button("Desmarca Link") {
@@ -51,14 +48,16 @@ class PainelGridLink(view: IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid
       edtPedido = edtPedido() {
         addValueChangeListener {blockUpdate()}
       }
+      edtVendedor = edtVendedor() {
+        addValueChangeListener {blockUpdate()}
+      }
       edtData = edtDataPedido() {
         addValueChangeListener {blockUpdate()}
       }
     }
     
     override fun numPedido(): Int = edtPedido.value ?: 0
-    override fun data(): LocalDate? {
-      return edtData.value
-    }
+    override fun vendedor(): String = edtVendedor.value ?: ""
+    override fun data(): LocalDate? = edtData.value
   }
 }

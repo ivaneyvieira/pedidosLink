@@ -10,10 +10,12 @@ import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
 import com.github.mvysny.karibudsl.v10.VaadinDsl
 import com.github.mvysny.karibudsl.v10.datePicker
 import com.github.mvysny.karibudsl.v10.integerField
+import com.github.mvysny.karibudsl.v10.textField
 import com.vaadin.flow.component.HasComponents
 import com.vaadin.flow.component.datepicker.DatePicker
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.textfield.IntegerField
+import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.textfield.TextFieldVariant
 import com.vaadin.flow.data.value.ValueChangeMode
 
@@ -125,6 +127,12 @@ fun Grid<PedidoLink>.colDataTef() = addColumnLocalDate(PedidoLink::dataTef) {
 fun (@VaadinDsl HasComponents).edtPedido(block: (@VaadinDsl IntegerField).() -> Unit = {}) = integerField("Pedido") {
   this.valueChangeMode = ValueChangeMode.TIMEOUT
   this.isAutofocus = true
+  addThemeVariants(TextFieldVariant.LUMO_SMALL)
+  block()
+}
+
+fun (@VaadinDsl HasComponents).edtVendedor(block: (@VaadinDsl TextField).() -> Unit = {}) = textField("Vendedor") {
+  this.valueChangeMode = ValueChangeMode.TIMEOUT
   addThemeVariants(TextFieldVariant.LUMO_SMALL)
   block()
 }

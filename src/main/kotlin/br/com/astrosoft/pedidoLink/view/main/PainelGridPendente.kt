@@ -16,6 +16,7 @@ import com.vaadin.flow.component.grid.GridVariant.LUMO_COMPACT
 import com.vaadin.flow.component.grid.GridVariant.LUMO_ROW_STRIPES
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.IntegerField
+import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.upload.Upload
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer
 import org.vaadin.olli.ClipboardHelper
@@ -45,7 +46,8 @@ class PainelGridPendente(view : IPedidoLinkView, blockUpdate: () -> Unit): Paine
   inner class FilterBarPendente: FilterBar(), IFiltroPendente {
     lateinit var edtPedido: IntegerField
     lateinit var edtData: DatePicker
-    
+    lateinit var edtVendedor: TextField
+  
     override fun FilterBar.contentBlock() {
       button("Desmarca Link") {
         icon = VaadinIcon.CHECK_CIRCLE_O.create()
@@ -53,6 +55,9 @@ class PainelGridPendente(view : IPedidoLinkView, blockUpdate: () -> Unit): Paine
         onLeftClick {view.desmarcaPedido()}
       }
       edtPedido = edtPedido() {
+        addValueChangeListener {blockUpdate()}
+      }
+      edtVendedor = edtVendedor() {
         addValueChangeListener {blockUpdate()}
       }
       edtData = edtDataPedido() {
@@ -67,6 +72,7 @@ class PainelGridPendente(view : IPedidoLinkView, blockUpdate: () -> Unit): Paine
     }
     
     override fun numPedido(): Int = edtPedido.value ?: 0
+    override fun vendedor(): String = edtVendedor.value ?: ""
     override fun data(): LocalDate? = edtData.value
   }
 }
