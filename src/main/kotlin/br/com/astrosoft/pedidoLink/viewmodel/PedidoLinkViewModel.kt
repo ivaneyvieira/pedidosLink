@@ -17,7 +17,9 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
     val filtro = view.filtroPedido
     return PedidoLink.listaPedido()
       .filter {
-        (it.dataPedido == filtro.data() || filtro.data() == null) && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
+        (it.dataPedido == filtro.data() || filtro.data() == null)
+        && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
+        && (it.vendedor?.startsWith(filtro.vendedor()) == true || filtro.vendedor() == "")
       }
   }
   
@@ -29,7 +31,9 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
     val filtro = view.filtroLink
     return PedidoLink.listaLink()
       .filter {
-        (it.dataPedido == filtro.data() || filtro.data() == null) && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
+        (it.dataPedido == filtro.data() || filtro.data() == null)
+        && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
+        && (it.vendedor?.startsWith(filtro.vendedor()) == true || filtro.vendedor() == "")
       }
   }
   
@@ -41,7 +45,9 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
     val filtro = view.filtroPendente
     return PedidoLink.listaPendente()
       .filter {
-        (it.dataPedido == filtro.data() || filtro.data() == null) && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
+        (it.dataPedido == filtro.data() || filtro.data() == null)
+        && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
+        && (it.vendedor?.startsWith(filtro.vendedor()) == true || filtro.vendedor() == "")
       }
   }
   
@@ -53,7 +59,8 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
     val filtro = view.filtroFinalizar
     return PedidoLink.listaFinalizar()
       .filter {
-        (it.dataPedido == filtro.data() || filtro.data() == null) && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
+        (it.dataPedido == filtro.data() || filtro.data() == null)
+        && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
       }
   }
   
@@ -65,7 +72,8 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
     val filtro = view.filtroFaturar
     return PedidoLink.listaFaturar()
       .filter {
-        (it.dataPedido == filtro.data() || filtro.data() == null) && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
+        (it.dataPedido == filtro.data() || filtro.data() == null)
+        && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
       }
   }
   
@@ -96,7 +104,8 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
   }
   
   fun desmarcaVendedor() {
-    val itens =      view.itensSelecionadoLink()
+    val itens =
+      view.itensSelecionadoLink()
         .ifEmpty {fail("Nenhum item selecionado")}
     itens.forEach {pedidoLink: PedidoLink ->
       pedidoLink.marcaVendedor("")
@@ -107,16 +116,19 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
 
 interface IFiltroPedido {
   fun numPedido(): Int
+  fun vendedor(): String;
   fun data(): LocalDate?
 }
 
 interface IFiltroLink {
   fun numPedido(): Int
+  fun vendedor(): String;
   fun data(): LocalDate?
 }
 
 interface IFiltroPendente {
   fun numPedido(): Int
+  fun vendedor(): String;
   fun data(): LocalDate?
 }
 
@@ -146,6 +158,7 @@ interface IPedidoLinkView: IView {
   val filtroPendente: IFiltroPendente
   val filtroFinalizar: IFiltroFinalizar
   val filtroFaturar: IFiltroFaturar
+  
   //
   fun marcaLink(pedidoLink: PedidoLink)
   fun desmarcaPedidoLink()
