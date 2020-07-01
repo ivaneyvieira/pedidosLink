@@ -31,7 +31,7 @@ class PainelGridPendente(view : IPedidoLinkView, blockUpdate: () -> Unit): Paine
     colDataPedido()
     //colHoraPedido()
     colHoraLink()
-    //colValorFrete()
+    colValorFrete()
     colTotal()
     colMetodo()
     colCartao()

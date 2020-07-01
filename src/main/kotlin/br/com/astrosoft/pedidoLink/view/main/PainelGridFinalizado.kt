@@ -14,7 +14,7 @@ class PainelGridFinalizado(view: IPedidoLinkView, blockUpdate: () -> Unit): Pain
     colLoja()
     colnumPedido()
     colDataPedido()
-    //colValorFrete()
+    colValorFrete()
     colTotal()
     colValorLink()
     colMetodo()
