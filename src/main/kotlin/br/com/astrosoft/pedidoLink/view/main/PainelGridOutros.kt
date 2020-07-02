@@ -16,7 +16,7 @@ class PainelGridOutros(view : IPedidoLinkView, blockUpdate: () -> Unit): PainelG
     colDataPedido()
     colHoraPedido()
     colMetodo()
-    statusPedido()
+    colStatusTef()
     colNotaFiscal()
     colDataNota()
     colHoraNota()

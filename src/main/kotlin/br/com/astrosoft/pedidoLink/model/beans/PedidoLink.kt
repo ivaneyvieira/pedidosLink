@@ -38,7 +38,8 @@ data class PedidoLink(val loja: Int,
                       val autorizadora: String?,
                       val autorizacao: String?,
                       val nsuHost: String?,
-                      val dataTef: LocalDate?) {
+                      val dataTef: LocalDate?,
+                      val statusTef: String?) {
   val notaFiscal: String
     get() = numeroNota(nfnoNota, nfseNota)
   val statusPedido
@@ -106,7 +107,7 @@ data class PedidoLink(val loja: Int,
         it.notaFiscal != ""
       }
     }
-  
+    
     fun listaOutros(): List<PedidoLink> {
       val list = saci.listaPedidoLink(storeno)
       return list.filter {

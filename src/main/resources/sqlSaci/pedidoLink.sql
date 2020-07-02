@@ -57,17 +57,20 @@ DROP TABLE IF EXISTS sqldados.TTEF;
 CREATE TEMPORARY TABLE sqldados.TTEF (
   PRIMARY KEY (storeno, ordno)
 )
-SELECT MID(PEDIDO, 1, 2)       AS loja,
-       S.no                    AS storeno,
-       MID(PEDIDO, 4, 100) * 1 AS ordno,
-       PEDIDO                  AS PEDIDO,
-       SUM(VALOR / 100)        AS VALOR,
-       PARCELAS                AS PARCELAS,
-       NOMEAUTORIZADORA        AS AUTORIZADORA,
-       AUTORIZACAO             AS AUTORIZACAO,
-       NSUHOST                 AS NSUHOST,
+SELECT MID(PEDIDO, 1, 2)                     AS loja,
+       S.no                                  AS storeno,
+       MID(PEDIDO, 4, 100) * 1               AS ordno,
+       PEDIDO                                AS PEDIDO,
+       SUM(VALOR / 100)                      AS VALOR,
+       PARCELAS                              AS PARCELAS,
+       NOMEAUTORIZADORA                      AS AUTORIZADORA,
+       AUTORIZACAO                           AS AUTORIZACAO,
+       NSUHOST                               AS NSUHOST,
+       MAX(IF(STATUS = 'CON', STATUS, NULL)) AS statusCon,
+       MAX(STATUS)                           AS statusOut,
+
        cast(CONCAT(MID(DATACRIACAO, 7, 4), MID(DATACRIACAO, 4, 2), MID(DATACRIACAO, 1, 2)) *
-	    1 AS DATE)         AS DATACRIACAO
+	    1 AS DATE)                       AS DATACRIACAO
 FROM sqldados.engecopi_tef_bruto AS B
   INNER JOIN sqldados.store      AS S
 	       ON S.sname = MID(PEDIDO, 1, 2)
@@ -106,7 +109,8 @@ SELECT P.storeno                                             AS loja,
        AUTORIZADORA                                          AS autorizadora,
        AUTORIZACAO                                           AS autorizacao,
        NSUHOST                                               AS nsuHost,
-       DATACRIACAO                                           AS dataTef
+       DATACRIACAO                                           AS dataTef,
+       IFNULL(statusCon, statusOut)                          AS statusTef
 FROM sqldados.eord          AS P
   LEFT JOIN  sqldados.TTEF  AS T
 	       USING (storeno, ordno)
