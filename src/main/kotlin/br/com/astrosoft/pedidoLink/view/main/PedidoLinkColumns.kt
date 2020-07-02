@@ -128,6 +128,10 @@ fun Grid<PedidoLink>.colNsuHost() = addColumnString(PedidoLink::nsuHost) {
   setHeader("Nsu Host")
 }
 
+fun Grid<PedidoLink>.colStatusTef() = addColumnString(PedidoLink::statusTef) {
+  setHeader("Status Tef")
+}
+
 fun Grid<PedidoLink>.colDataTef() = addColumnLocalDate(PedidoLink::dataTef) {
   setHeader("Data Tef")
 }
