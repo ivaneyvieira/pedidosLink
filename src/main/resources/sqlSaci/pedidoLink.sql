@@ -72,7 +72,7 @@ FROM sqldados.engecopi_tef_bruto AS B
   INNER JOIN sqldados.store      AS S
 	       ON S.sname = MID(PEDIDO, 1, 2)
 WHERE nsu > date_format(:data, '%y%m%d') * 1000000000
-  AND STATUS = 'CON'
+/*  AND STATUS = 'CON'*/
   AND (S.no = :storeno OR :storeno = 0)
 GROUP BY PEDIDO;
 
