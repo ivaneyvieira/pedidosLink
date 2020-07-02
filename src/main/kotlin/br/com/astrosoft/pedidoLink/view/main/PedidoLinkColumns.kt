@@ -8,6 +8,7 @@ import br.com.astrosoft.framework.view.addColumnString
 import br.com.astrosoft.framework.view.localePtBr
 import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
 import com.github.mvysny.karibudsl.v10.VaadinDsl
+import com.github.mvysny.karibudsl.v10.addColumnFor
 import com.github.mvysny.karibudsl.v10.datePicker
 import com.github.mvysny.karibudsl.v10.integerField
 import com.github.mvysny.karibudsl.v10.textField
@@ -72,6 +73,10 @@ fun Grid<PedidoLink>.colObs() = addColumnString(PedidoLink::obs) {
 
 fun Grid<PedidoLink>.colNota() = addColumnString(PedidoLink::nota) {
   setHeader("LJ")
+}
+
+fun Grid<PedidoLink>.statusPedido() = addColumnFor(PedidoLink::statusPedido) {
+  setHeader("Status")
 }
 
 fun Grid<PedidoLink>.colValorFrete() = addColumnDouble(PedidoLink::valorFrete) {

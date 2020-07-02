@@ -63,6 +63,12 @@ class UserSaci: IUser {
       bitAcesso = if(value) bitAcesso or BIT_FATURADO
       else bitAcesso and BIT_FATURADO.inv()
     }
+  var acl_outros
+    get() = (bitAcesso and BIT_OUTROS) != 0 || admin
+    set(value) {
+      bitAcesso = if(value) bitAcesso or BIT_OUTROS
+      else bitAcesso and BIT_OUTROS.inv()
+    }
   
   companion object {
     private val BIT_ATIVO = 2.pow(9)
@@ -71,6 +77,7 @@ class UserSaci: IUser {
     private val BIT_PENDENTE = 2.pow(2)
     private val BIT_FINALIZAR = 2.pow(3)
     private val BIT_FATURADO = 2.pow(4)
+    private val BIT_OUTROS = 2.pow(4)
     
     fun findAll(): List<UserSaci>? {
       return saci.findAllUser()

@@ -83,6 +83,19 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
       }
   }
   
+  fun updateGridOutros() {
+    view.updateGridOutros(listOutros())
+  }
+  
+  private fun listOutros(): List<PedidoLink> {
+    val filtro = view.filtroOutros
+    return PedidoLink.listaOutros()
+      .filter {
+        (it.dataPedido == filtro.data() || filtro.data() == null)
+        && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
+      }
+  }
+  
   fun marcaPedido(pedido: PedidoLink?) = exec {
     pedido?.marcaHorario(LocalDate.now(), LocalTime.now())
     updateGridLink()
@@ -148,12 +161,18 @@ interface IFiltroFaturar {
   fun data(): LocalDate?
 }
 
+interface IFiltroOutros {
+  fun numPedido(): Int
+  fun data(): LocalDate?
+}
+
 interface IPedidoLinkView: IView {
   fun updateGridPedido(itens: List<PedidoLink>)
   fun updateGridLink(itens: List<PedidoLink>)
   fun updateGridPendente(itens: List<PedidoLink>)
   fun updateGridFinalizar(itens: List<PedidoLink>)
   fun updateGridFaturar(itens: List<PedidoLink>)
+  fun updateGridOutros(itens: List<PedidoLink>)
   
   fun itensSelecionadoPedido(): List<PedidoLink>
   fun itensSelecionadoLink(): List<PedidoLink>
@@ -164,6 +183,7 @@ interface IPedidoLinkView: IView {
   val filtroPendente: IFiltroPendente
   val filtroFinalizar: IFiltroFinalizar
   val filtroFaturar: IFiltroFaturar
+  val filtroOutros: IFiltroOutros
   
   //
   fun marcaLink(pedidoLink: PedidoLink)
