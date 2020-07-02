@@ -25,7 +25,6 @@ class PainelGridLink(view: IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid
     colValorFrete()
     colTotal()
     colMetodo()
-    statusPedido()
     colCartao()
     statusPedido()
     colWhatsapp()
