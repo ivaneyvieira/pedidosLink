@@ -9,6 +9,7 @@ import br.com.astrosoft.pedidoLink.view.layout.PedidoLinkLayout
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroFaturar
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroFinalizar
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroLink
+import br.com.astrosoft.pedidoLink.viewmodel.IFiltroOutros
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroPedido
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroPendente
 import br.com.astrosoft.pedidoLink.viewmodel.IPedidoLinkView
@@ -35,6 +36,7 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
   private val gridPendente = PainelGridPendente(this) {viewModel.updateGridPendente()}
   private val gridFinalizar = PainelGridFinalizado(this) {viewModel.updateGridFinalizar()}
   private val gridFaturar = PainelGridFaturado(this) {viewModel.updateGridFaturar()}
+  private val gridOutros = PainelGridOutros(this) {viewModel.updateGridOutros()}
   override val viewModel: PedidoLinkViewModel = PedidoLinkViewModel(this)
   
   override fun isAccept() = true
@@ -48,6 +50,7 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
       if(user.acl_pendente) tabGrid(TAB_PENDENTE, gridPendente)
       if(user.acl_finalizar) tabGrid(TAB_FINALIZAR, gridFinalizar)
       if(user.acl_faturado) tabGrid(TAB_FATURADO, gridFaturar)
+      if(user.acl_outros) tabGrid(TAB_OUTROS, gridOutros)
     }
     when {
       user.acl_pedido    -> viewModel.updateGridPedido()
@@ -55,6 +58,7 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
       user.acl_pendente  -> viewModel.updateGridPendente()
       user.acl_finalizar -> viewModel.updateGridFinalizar()
       user.acl_faturado  -> viewModel.updateGridFaturar()
+      user.acl_outros  -> viewModel.updateGridOutros()
     }
   }
   
@@ -117,6 +121,10 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
     gridFaturar.updateGrid(itens)
   }
   
+  override fun updateGridOutros(itens: List<PedidoLink>) {
+    gridOutros.updateGrid(itens)
+  }
+  
   override val filtroPedido: IFiltroPedido
     get() = gridPedido.filterBar as IFiltroPedido
   override val filtroLink: IFiltroLink
@@ -127,6 +135,8 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
     get() = gridFinalizar.filterBar as IFiltroFinalizar
   override val filtroFaturar: IFiltroFaturar
     get() = gridFaturar.filterBar as IFiltroFaturar
+  override val filtroOutros: IFiltroOutros
+    get() = gridOutros.filterBar as IFiltroOutros
   
   companion object {
     const val TAB_PEDIDO: String = "Pedido"
@@ -134,6 +144,7 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
     const val TAB_PENDENTE: String = "Pendente"
     const val TAB_FINALIZAR: String = "Finalzar"
     const val TAB_FATURADO: String = "Faturado"
+    const val TAB_OUTROS: String = "Outros status"
   }
 }
 

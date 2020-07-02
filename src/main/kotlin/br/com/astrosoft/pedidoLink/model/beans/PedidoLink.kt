@@ -41,6 +41,10 @@ data class PedidoLink(val loja: Int,
                       val dataTef: LocalDate?) {
   val notaFiscal: String
     get() = numeroNota(nfnoNota, nfseNota)
+  val statusPedido
+    get() = StatusPedido.values()
+      .toList()
+      .firstOrNull {it.numero == status}
   
   private fun numeroNota(nfno: String, nfse: String): String {
     return when {
@@ -102,6 +106,13 @@ data class PedidoLink(val loja: Int,
         it.notaFiscal != ""
       }
     }
+  
+    fun listaOutros(): List<PedidoLink> {
+      val list = saci.listaPedidoLink(storeno)
+      return list.filter {
+        !statusValidosPedido.contains(it.status)
+      }
+    }
     
     fun uploadFile(inputStream: InputStream) {
       val buffer = BufferedReader(InputStreamReader(inputStream))
@@ -114,4 +125,18 @@ data class PedidoLink(val loja: Int,
       saci.insertFile(records.toList())
     }
   }
+}
+
+enum class StatusPedido(val numero: Int, val descricao: String) {
+  INCLUIDO(0, "Incluído"),
+  ORCADO(1, "Orçado"),
+  RESERVADO(2, "Reservado"),
+  VENDIDO(3, "Vendido"),
+  EXPIRADO(4, "Expirado"),
+  CANCELADO(5, "Cancelado"),
+  RESERVADO_B(6, "Reserva B"),
+  TRANSITO(7, "Trânsito"),
+  FUTURA(8, "Futura");
+  
+  override fun toString() = descricao
 }

@@ -28,6 +28,7 @@ class PainelGridPedido(view: IPedidoLinkView, blockUpdate: () -> Unit): PainelGr
     colVendedor()
     colCliente()
     colUsername()
+    statusPedido()
   }
   
   override fun filterBar() = FilterBarPedido()
