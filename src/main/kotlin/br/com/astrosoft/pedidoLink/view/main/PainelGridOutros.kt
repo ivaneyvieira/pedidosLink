@@ -2,35 +2,33 @@ package br.com.astrosoft.pedidoLink.view.main
 
 import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
-import br.com.astrosoft.pedidoLink.viewmodel.IFiltroFinalizar
+import br.com.astrosoft.pedidoLink.viewmodel.IFiltroOutros
 import br.com.astrosoft.pedidoLink.viewmodel.IPedidoLinkView
 import com.vaadin.flow.component.datepicker.DatePicker
 import com.vaadin.flow.component.grid.Grid
 import com.vaadin.flow.component.textfield.IntegerField
 import java.time.LocalDate
 
-class PainelGridFinalizado(view: IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(view, blockUpdate) {
+class PainelGridOutros(view : IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(view, blockUpdate) {
   override fun Grid<PedidoLink>.gridConfig() {
     colLoja()
     colnumPedido()
     colDataPedido()
-    colValorFrete()
-    colTotal()
-    colValorLink()
+    colHoraPedido()
     colMetodo()
-    colCartao()
-    colAutorizadora()
-    colParcelas()
-    colAutorizacao()
-    colNsuHost()
-    colDataTef()
-    colVendedor()
+    colNotaFiscal()
+    colDataNota()
+    colHoraNota()
+    colDataLink()
+    colHoraLink()
+    colUsername()
     statusPedido()
+    colObs()
   }
   
-  override fun filterBar() = FilterBarFinalizado()
+  override fun filterBar() = FilterBarOutros()
   
-  inner class FilterBarFinalizado: FilterBar(), IFiltroFinalizar {
+  inner class FilterBarOutros(): FilterBar(), IFiltroOutros {
     lateinit var edtPedido: IntegerField
     lateinit var edtData: DatePicker
     

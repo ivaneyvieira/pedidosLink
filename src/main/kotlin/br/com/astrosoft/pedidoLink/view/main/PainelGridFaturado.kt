@@ -25,6 +25,7 @@ class PainelGridFaturado(view : IPedidoLinkView, blockUpdate: () -> Unit): Paine
     colDataLink()
     colHoraLink()
     colUsername()
+    statusPedido()
     colObs()
   }
   

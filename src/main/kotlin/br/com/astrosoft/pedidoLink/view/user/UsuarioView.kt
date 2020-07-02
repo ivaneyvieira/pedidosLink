@@ -149,6 +149,9 @@ class UserCrudFormFactory(private val viewModel: UsuarioViewModel): AbstractCrud
           checkBox("Faturado") {
             binder.bind(this, UserSaci::acl_faturado.name)
           }
+          checkBox("Outros Status") {
+            binder.bind(this, UserSaci::acl_outros.name)
+          }
         }
       }
       hr()
