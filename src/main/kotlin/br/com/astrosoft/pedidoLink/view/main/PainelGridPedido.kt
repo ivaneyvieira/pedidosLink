@@ -23,12 +23,12 @@ class PainelGridPedido(view: IPedidoLinkView, blockUpdate: () -> Unit): PainelGr
     colTotal()
     colMetodo()
     colCartao()
+    statusPedido()
     colWhatsapp()
     colEmpno()
     colVendedor()
     colCliente()
     colUsername()
-    statusPedido()
   }
   
   override fun filterBar() = FilterBarPedido()

@@ -35,12 +35,12 @@ class PainelGridPendente(view : IPedidoLinkView, blockUpdate: () -> Unit): Paine
     colTotal()
     colMetodo()
     colCartao()
+    statusPedido()
     colWhatsapp()
     colVendedor()
     colEmpno()
     colCliente()
     colUsername()
-    statusPedido()
   }
   
   override fun filterBar() = FilterBarPendente()

@@ -19,13 +19,13 @@ class PainelGridFaturado(view : IPedidoLinkView, blockUpdate: () -> Unit): Paine
     colDataPedido()
     colHoraPedido()
     colMetodo()
+    statusPedido()
     colNotaFiscal()
     colDataNota()
     colHoraNota()
     colDataLink()
     colHoraLink()
     colUsername()
-    statusPedido()
     colObs()
   }
   
