@@ -17,7 +17,9 @@ class PainelGridFinalizado(view: IPedidoLinkView, blockUpdate: () -> Unit): Pain
     colValorFrete()
     colTotal()
     colValorLink()
+    statusPedido()
     colMetodo()
+    statusPedido()
     colCartao()
     colAutorizadora()
     colParcelas()
@@ -25,7 +27,6 @@ class PainelGridFinalizado(view: IPedidoLinkView, blockUpdate: () -> Unit): Pain
     colNsuHost()
     colDataTef()
     colVendedor()
-    statusPedido()
   }
   
   override fun filterBar() = FilterBarFinalizado()
