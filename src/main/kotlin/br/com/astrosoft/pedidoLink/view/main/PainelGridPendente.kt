@@ -1,30 +1,27 @@
 package br.com.astrosoft.pedidoLink.view.main
 
 import br.com.astrosoft.framework.view.PainelGrid
-import br.com.astrosoft.framework.view.addColumnButton
 import br.com.astrosoft.framework.view.addColumnButtonClipBoard
 import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroPendente
 import br.com.astrosoft.pedidoLink.viewmodel.IPedidoLinkView
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.onLeftClick
+import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.button.ButtonVariant.LUMO_SMALL
 import com.vaadin.flow.component.datepicker.DatePicker
 import com.vaadin.flow.component.grid.Grid
-import com.vaadin.flow.component.grid.GridVariant.LUMO_COLUMN_BORDERS
-import com.vaadin.flow.component.grid.GridVariant.LUMO_COMPACT
-import com.vaadin.flow.component.grid.GridVariant.LUMO_ROW_STRIPES
+import com.vaadin.flow.component.grid.Grid.SelectionMode.MULTI
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.component.upload.Upload
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer
-import org.vaadin.olli.ClipboardHelper
-import java.io.InputStream
 import java.time.LocalDate
 
 class PainelGridPendente(view : IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(view, blockUpdate) {
   override fun Grid<PedidoLink>.gridConfig() {
+    setSelectionMode(MULTI)
     addColumnButtonClipBoard(VaadinIcon.CLIPBOARD, textToClipBoard = {noteClipBoard})
     colLoja()
     colnumPedido()
@@ -56,6 +53,11 @@ class PainelGridPendente(view : IPedidoLinkView, blockUpdate: () -> Unit): Paine
         addThemeVariants(LUMO_SMALL)
         onLeftClick {view.desmarcaPedido()}
       }
+      button("Outros status") {
+        icon = VaadinIcon.CLOSE_SMALL.create()
+        addThemeVariants(LUMO_SMALL)
+        onLeftClick {view.marcaOutro()}
+      }
       edtPedido = edtPedido() {
         addValueChangeListener {blockUpdate()}
       }
@@ -67,6 +69,9 @@ class PainelGridPendente(view : IPedidoLinkView, blockUpdate: () -> Unit): Paine
       }
       val buffer = MemoryBuffer()
       val upload = Upload(buffer)
+      val uploadButton = Button("Arquivo TEF")
+      upload.uploadButton = uploadButton
+      upload.isDropAllowed = false
       add(upload)
       upload.addSucceededListener {
         view.uploadFile(buffer.inputStream)

@@ -5,6 +5,7 @@ import br.com.astrosoft.pedidoLink.model.saci
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
+import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -34,6 +35,7 @@ data class PedidoLink(val loja: Int,
                       val confirmado: String,
                       val senhaVendedor: String,
                       val marca: String,
+                      val marcaOutros: String,
                       val parcelas: Int?,
                       val autorizadora: String?,
                       val autorizacao: String?,
@@ -66,52 +68,68 @@ data class PedidoLink(val loja: Int,
     saci.marcaVendedor(loja, numPedido, marcaNova)
   }
   
+  fun marcaOutroProdido(marcaNova: String) {
+    if(statusTefOutros.contains(statusTef))
+      saci.marcaOutros(loja, numPedido, marcaNova)
+  }
+  
   companion object {
-    val storeno: Int by lazy {
+    private val storeno: Int by lazy {
       UserSaci.findUser(AppConfig.userSaci?.login)?.storeno ?: 0
     }
     private val statusValidosPedido = listOf(1, 2, 8)
+    private val statusTefOutros = listOf("NOV", "NEG", "INV", "EST", "EXP", "ABA", "CAN")
+    private val list = mutableListOf<PedidoLink>().apply {
+      addAll(saci.listaPedidoLink(storeno))
+    }
+    private var time = LocalTime.now()
+    @Synchronized
+    fun updateList(): List<PedidoLink> {
+      val timeNow = LocalTime.now()
+      val duration = Duration.between(time, timeNow).seconds
+      
+      if(duration >= 10) {
+        val newList = saci.listaPedidoLink(storeno)
+        list.clear()
+        list.addAll(newList)
+        time = LocalTime.now()
+      }
+      return list
+    }
     
     fun listaPedido(): List<PedidoLink> {
-      val list = saci.listaPedidoLink(storeno)
-      //val statusList = listOf(0, 1, 2, 3, 4, 5, 6, 7, 8)
-      return list.filter {
+      return updateList().filter {
         it.notaFiscal == "" && it.dataLink == null && statusValidosPedido.contains(it.status) && it.marca == ""
       }
     }
     
     fun listaLink(): List<PedidoLink> {
-      val list = saci.listaPedidoLink(storeno)
-      return list.filter {
+      return updateList().filter {
         it.notaFiscal == "" && it.dataLink == null && statusValidosPedido.contains(it.status) && it.marca != ""
       }
     }
     
     fun listaPendente(): List<PedidoLink> {
-      val list = saci.listaPedidoLink(storeno)
-      return list.filter {
-        it.dataLink != null && it.notaFiscal == "" && it.confirmado == "N"
+      return updateList().filter {
+        it.dataLink != null && it.notaFiscal == "" && it.confirmado == "N" && it.marcaOutros != "S"
       }
     }
     
     fun listaFinalizar(): List<PedidoLink> {
-      val list = saci.listaPedidoLink(storeno)
-      return list.filter {
-        it.dataLink != null && it.notaFiscal == "" && it.confirmado == "S"
+      return updateList().filter {
+        it.dataLink != null && it.notaFiscal == "" && it.confirmado == "S" && it.marcaOutros != "S"
       }
     }
     
     fun listaFaturar(): List<PedidoLink> {
-      val list = saci.listaPedidoLink(storeno)
-      return list.filter {
-        it.notaFiscal != ""
+      return updateList().filter {
+        it.notaFiscal != "" && it.marcaOutros != "S"
       }
     }
     
     fun listaOutros(): List<PedidoLink> {
-      val list = saci.listaPedidoLink(storeno)
-      return list.filter {
-        !statusValidosPedido.contains(it.status)
+      return updateList().filter {
+        it.marcaOutros == "S"
       }
     }
     

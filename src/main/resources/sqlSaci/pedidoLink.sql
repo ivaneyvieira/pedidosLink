@@ -105,6 +105,7 @@ SELECT P.storeno                                             AS loja,
        IF(T.PEDIDO IS NULL, 'N', 'S')                        AS confirmado,
        IFNULL(senha, '')                                     AS senhaVendedor,
        P.c1                                                  AS marca,
+       P.c2                                                  AS marcaOutros,
        PARCELAS                                              AS parcelas,
        AUTORIZADORA                                          AS autorizadora,
        AUTORIZACAO                                           AS autorizacao,
@@ -114,8 +115,6 @@ SELECT P.storeno                                             AS loja,
 FROM sqldados.eord          AS P
   LEFT JOIN  sqldados.TTEF  AS T
 	       USING (storeno, ordno)
-  LEFT JOIN  sqlpdv.pxa     AS PX
-	       ON (P.storeno = PX.storeno AND P.ordno = PX.eordno)
   INNER JOIN sqldados.custp AS C
 	       ON C.no = P.custno
   LEFT JOIN  sqldados.nf    AS N

@@ -62,6 +62,14 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
     }
   }
   
+  override fun marcaOutro(){
+    viewModel.marcaOutros()
+  }
+  
+  override fun desmarcaOutros(){
+    viewModel.desmarcaOutros()
+  }
+  
   override fun desmarcaPedidoLink() {
     viewModel.desmarcaVendedor()
   }
