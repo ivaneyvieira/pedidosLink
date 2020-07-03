@@ -131,6 +131,26 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
     }
     updateGridLink()
   }
+  
+  fun marcaOutros() = exec {
+    val itens =
+      view.itensSelecionadoPendente()
+        .ifEmpty {fail("Nenhum item selecionado")}
+    itens.forEach {pedidoLink: PedidoLink ->
+      pedidoLink.marcaOutroProdido("S")
+    }
+    updateGridPendente()
+  }
+  
+  fun desmarcaOutros() = exec {
+    val itens =
+      view.itensSelecionadoPendente()
+        .ifEmpty {fail("Nenhum item selecionado")}
+    itens.forEach {pedidoLink: PedidoLink ->
+      pedidoLink.marcaOutroProdido("N")
+    }
+    updateGridPendente()
+  }
 }
 
 interface IFiltroPedido {
@@ -190,6 +210,8 @@ interface IPedidoLinkView: IView {
   fun desmarcaPedidoLink()
   fun marcaVendedor(pedidoLink: PedidoLink)
   fun desmarcaPedido()
+  fun marcaOutro()
+  fun desmarcaOutros()
   fun uploadFile(inputStream: InputStream)
 }
 
