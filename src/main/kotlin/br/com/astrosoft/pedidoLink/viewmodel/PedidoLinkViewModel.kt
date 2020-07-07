@@ -76,7 +76,7 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
   
   private fun listFaturar(): List<PedidoLink> {
     val filtro = view.filtroFaturar
-    return PedidoLink.listaFaturar()
+    return PedidoLink.listaFaturado()
       .filter {
         (it.dataPedido == filtro.data() || filtro.data() == null)
         && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
