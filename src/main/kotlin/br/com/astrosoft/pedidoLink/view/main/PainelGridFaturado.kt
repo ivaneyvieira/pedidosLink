@@ -2,7 +2,7 @@ package br.com.astrosoft.pedidoLink.view.main
 
 import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
-import br.com.astrosoft.pedidoLink.viewmodel.IFiltroFaturar
+import br.com.astrosoft.pedidoLink.viewmodel.IFiltroFaturado
 import br.com.astrosoft.pedidoLink.viewmodel.IPedidoLinkView
 import com.vaadin.flow.component.datepicker.DatePicker
 import com.vaadin.flow.component.grid.Grid
@@ -31,7 +31,7 @@ class PainelGridFaturado(view : IPedidoLinkView, blockUpdate: () -> Unit): Paine
   
   override fun filterBar() = FilterBarFaturar()
   
-  inner class FilterBarFaturar(): FilterBar(), IFiltroFaturar {
+  inner class FilterBarFaturar(): FilterBar(), IFiltroFaturado {
     lateinit var edtPedido: IntegerField
     lateinit var edtData: DatePicker
     

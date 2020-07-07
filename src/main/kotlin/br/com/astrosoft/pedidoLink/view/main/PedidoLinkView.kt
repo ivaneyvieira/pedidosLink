@@ -6,7 +6,7 @@ import br.com.astrosoft.framework.view.tabGrid
 import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
 import br.com.astrosoft.pedidoLink.model.beans.UserSaci
 import br.com.astrosoft.pedidoLink.view.layout.PedidoLinkLayout
-import br.com.astrosoft.pedidoLink.viewmodel.IFiltroFaturar
+import br.com.astrosoft.pedidoLink.viewmodel.IFiltroFaturado
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroFinalizar
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroLink
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroOutros
@@ -35,7 +35,7 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
   private val gridLink = PainelGridLink(this) {viewModel.updateGridLink()}
   private val gridPendente = PainelGridPendente(this) {viewModel.updateGridPendente()}
   private val gridFinalizar = PainelGridFinalizado(this) {viewModel.updateGridFinalizar()}
-  private val gridFaturar = PainelGridFaturado(this) {viewModel.updateGridFaturar()}
+  private val gridFaturar = PainelGridFaturado(this) {viewModel.updateGridFaturado()}
   private val gridOutros = PainelGridOutros(this) {viewModel.updateGridOutros()}
   override val viewModel: PedidoLinkViewModel = PedidoLinkViewModel(this)
   
@@ -57,7 +57,7 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
       user.acl_link      -> viewModel.updateGridLink()
       user.acl_pendente  -> viewModel.updateGridPendente()
       user.acl_finalizar -> viewModel.updateGridFinalizar()
-      user.acl_faturado  -> viewModel.updateGridFaturar()
+      user.acl_faturado  -> viewModel.updateGridFaturado()
       user.acl_outros  -> viewModel.updateGridOutros()
     }
   }
@@ -125,7 +125,7 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
     gridFinalizar.updateGrid(itens)
   }
   
-  override fun updateGridFaturar(itens: List<PedidoLink>) {
+  override fun updateGridFaturado(itens: List<PedidoLink>) {
     gridFaturar.updateGrid(itens)
   }
   
@@ -141,8 +141,8 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
     get() = gridPendente.filterBar as IFiltroPendente
   override val filtroFinalizar: IFiltroFinalizar
     get() = gridFinalizar.filterBar as IFiltroFinalizar
-  override val filtroFaturar: IFiltroFaturar
-    get() = gridFaturar.filterBar as IFiltroFaturar
+  override val filtroFaturado: IFiltroFaturado
+    get() = gridFaturar.filterBar as IFiltroFaturado
   override val filtroOutros: IFiltroOutros
     get() = gridOutros.filterBar as IFiltroOutros
   
