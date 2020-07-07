@@ -21,7 +21,7 @@ import java.time.LocalDate
 
 class PainelGridPendente(view : IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(view, blockUpdate) {
   override fun Grid<PedidoLink>.gridConfig() {
-    setSelectionMode(MULTI)
+    //setSelectionMode(MULTI)
     addColumnButtonClipBoard(VaadinIcon.CLIPBOARD, textToClipBoard = {noteClipBoard})
     colLoja()
     colnumPedido()
@@ -53,11 +53,13 @@ class PainelGridPendente(view : IPedidoLinkView, blockUpdate: () -> Unit): Paine
         addThemeVariants(LUMO_SMALL)
         onLeftClick {view.desmarcaPedido()}
       }
+      /*
       button("Outros status") {
         icon = VaadinIcon.CLOSE_SMALL.create()
         addThemeVariants(LUMO_SMALL)
         onLeftClick {view.marcaOutro()}
       }
+       */
       edtPedido = edtPedido() {
         addValueChangeListener {blockUpdate()}
       }

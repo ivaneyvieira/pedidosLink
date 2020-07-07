@@ -79,10 +79,12 @@ data class PedidoLink(val loja: Int,
     }
     private val statusValidosPedido = listOf(1, 2, 8)
     private val statusTefOutros = listOf("NOV", "NEG", "INV", "EST", "EXP", "ABA", "CAN")
+    private val statusTefConfirmado = listOf("CON")
     private val list = mutableListOf<PedidoLink>().apply {
       addAll(saci.listaPedidoLink(storeno))
     }
     private var time = LocalTime.now()
+    
     @Synchronized
     fun updateList(): List<PedidoLink> {
       val timeNow = LocalTime.now()
@@ -111,25 +113,26 @@ data class PedidoLink(val loja: Int,
     
     fun listaPendente(): List<PedidoLink> {
       return updateList().filter {
-        it.dataLink != null && it.notaFiscal == "" && it.confirmado == "N" && it.marcaOutros != "S"
+        it.dataLink != null && it.notaFiscal == "" && it.confirmado == "N"
       }
     }
     
     fun listaFinalizar(): List<PedidoLink> {
       return updateList().filter {
-        it.dataLink != null && it.notaFiscal == "" && it.confirmado == "S" && it.marcaOutros != "S"
+        it.dataLink != null && it.notaFiscal == "" && it.confirmado == "S"
+        && it.statusTef in statusTefConfirmado
       }
     }
     
     fun listaFaturar(): List<PedidoLink> {
       return updateList().filter {
-        it.notaFiscal != "" && it.marcaOutros != "S"
+        it.notaFiscal != ""
       }
     }
     
     fun listaOutros(): List<PedidoLink> {
       return updateList().filter {
-        it.marcaOutros == "S"
+        it.statusTef in statusTefOutros;
       }
     }
     
