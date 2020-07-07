@@ -124,7 +124,7 @@ data class PedidoLink(val loja: Int,
       }
     }
     
-    fun listaFaturar(): List<PedidoLink> {
+    fun listaFaturado(): List<PedidoLink> {
       return updateList().filter {
         it.notaFiscal != ""
       }

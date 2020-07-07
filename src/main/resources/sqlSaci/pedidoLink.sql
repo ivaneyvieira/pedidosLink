@@ -57,25 +57,24 @@ DROP TABLE IF EXISTS sqldados.TTEF;
 CREATE TEMPORARY TABLE sqldados.TTEF (
   PRIMARY KEY (storeno, ordno)
 )
-SELECT MID(PEDIDO, 1, 2)                     AS loja,
-       S.no                                  AS storeno,
-       MID(PEDIDO, 4, 100) * 1               AS ordno,
-       PEDIDO                                AS PEDIDO,
-       SUM(VALOR / 100)                      AS VALOR,
-       PARCELAS                              AS PARCELAS,
-       NOMEAUTORIZADORA                      AS AUTORIZADORA,
-       AUTORIZACAO                           AS AUTORIZACAO,
-       NSUHOST                               AS NSUHOST,
-       MAX(IF(STATUS = 'CON', STATUS, NULL)) AS statusCon,
-       MAX(STATUS)                           AS statusOut,
+SELECT MID(PEDIDO, 1, 2)                                   AS loja,
+       S.no                                                AS storeno,
+       MID(PEDIDO, 4, 100) * 1                             AS ordno,
+       PEDIDO                                              AS PEDIDO,
+       SUM(VALOR / 100)                                    AS VALOR,
+       PARCELAS                                            AS PARCELAS,
+       NOMEAUTORIZADORA                                    AS AUTORIZADORA,
+       AUTORIZACAO                                         AS AUTORIZACAO,
+       NSUHOST                                             AS NSUHOST,
+       MAX(IF(STATUS IN ('CON', 'AGU'), STATUS, NULL))     AS statusCon,
+       MAX(IF(STATUS NOT IN ('CON', 'AGU'), STATUS, NULL)) AS statusOut,
 
        cast(CONCAT(MID(DATACRIACAO, 7, 4), MID(DATACRIACAO, 4, 2), MID(DATACRIACAO, 1, 2)) *
-	    1 AS DATE)                       AS DATACRIACAO
+	    1 AS DATE)                                     AS DATACRIACAO
 FROM sqldados.engecopi_tef_bruto AS B
   INNER JOIN sqldados.store      AS S
 	       ON S.sname = MID(PEDIDO, 1, 2)
 WHERE nsu > date_format(:data, '%y%m%d') * 1000000000
-/*  AND STATUS = 'CON'*/
   AND (S.no = :storeno OR :storeno = 0)
 GROUP BY PEDIDO;
 
@@ -102,7 +101,7 @@ SELECT P.storeno                                             AS loja,
        TPED.empno                                            AS empno,
        TPED.VENDEDOR                                         AS vendedor,
        P.status                                              AS status,
-       IF(T.PEDIDO IS NULL, 'N', 'S')                        AS confirmado,
+       IF(IFNULL(statusCon, statusOut) = 'CON', 'S', 'N')    AS confirmado,
        IFNULL(senha, '')                                     AS senhaVendedor,
        P.c1                                                  AS marca,
        P.c2                                                  AS marcaOutros,
