@@ -16,7 +16,7 @@ import java.time.LocalDate
 
 class PainelGridOutros(view : IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(view, blockUpdate) {
   override fun Grid<PedidoLink>.gridConfig() {
-    setSelectionMode(MULTI)
+    //setSelectionMode(MULTI)
     colLoja()
     colnumPedido()
     colDataPedido()
@@ -40,11 +40,13 @@ class PainelGridOutros(view : IPedidoLinkView, blockUpdate: () -> Unit): PainelG
     lateinit var edtData: DatePicker
     
     override fun FilterBar.contentBlock() {
+      /*
       button("Remover") {
         icon = VaadinIcon.ERASER.create()
         addThemeVariants(LUMO_SMALL)
         onLeftClick {view.desmarcaOutros()}
       }
+       */
       edtPedido = edtPedido() {
         addValueChangeListener {blockUpdate()}
       }
