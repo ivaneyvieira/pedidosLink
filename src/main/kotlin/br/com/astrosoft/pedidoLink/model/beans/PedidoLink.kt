@@ -5,7 +5,6 @@ import br.com.astrosoft.pedidoLink.model.saci
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
-import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -69,8 +68,7 @@ data class PedidoLink(val loja: Int,
   }
   
   fun marcaUserLink(userLink: Int) {
-    if(statusTefOutros.contains(statusTef))
-      saci.marcaUserLink(loja, numPedido, userLink)
+    saci.marcaUserLink(loja, numPedido, userLink)
   }
   
   companion object {
