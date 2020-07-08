@@ -158,7 +158,6 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
       fail("Senha incorreta");
     
     updateGridGerarLink()
-    updateGridLink()
   }
   
   fun desmarcaUserLink() = exec {
