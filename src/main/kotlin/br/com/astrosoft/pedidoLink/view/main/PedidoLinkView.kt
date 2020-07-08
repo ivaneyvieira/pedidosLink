@@ -15,6 +15,7 @@ import br.com.astrosoft.pedidoLink.viewmodel.IFiltroPedido
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroPendente
 import br.com.astrosoft.pedidoLink.viewmodel.IPedidoLinkView
 import br.com.astrosoft.pedidoLink.viewmodel.PedidoLinkViewModel
+import br.com.astrosoft.pedidoLink.viewmodel.SenhaUsuario
 import br.com.astrosoft.pedidoLink.viewmodel.SenhaVendendor
 import com.github.mvysny.karibudsl.v10.bind
 import com.github.mvysny.karibudsl.v10.passwordField
@@ -61,15 +62,22 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
       user.acl_pendente  -> viewModel.updateGridPendente()
       user.acl_finalizar -> viewModel.updateGridFinalizar()
       user.acl_faturado  -> viewModel.updateGridFaturado()
-      user.acl_outros  -> viewModel.updateGridOutros()
+      user.acl_outros    -> viewModel.updateGridOutros()
     }
   }
   
-  override fun marcaUserLink(){
-    viewModel.marcaUserLink()
+  override fun marcaUserLink(pedidoLink: PedidoLink) {
+    val userSaci = AppConfig.userSaci as UserSaci
+    val form = FormUsuario()
+    val usuario = SenhaUsuario(userSaci.login, "")
+    form.binder.bean = usuario
+    showForm("Senha do Usuário", form) {
+      val senha = form.binder.bean.senha ?: "#######"
+      viewModel.marcaUserLink(pedidoLink, senha)
+    }
   }
   
-  override fun desmarcaUserLink(){
+  override fun desmarcaUserLink() {
     viewModel.desmarcaUserLink()
   }
   
@@ -179,6 +187,23 @@ class FormVendedor: FormLayout() {
     passwordField("Senha") {
       addThemeVariants(LUMO_SMALL)
       bind(binder).bind(SenhaVendendor::senha)
+    }
+  }
+}
+
+class FormUsuario: FormLayout() {
+  val binder = Binder<SenhaUsuario>(SenhaUsuario::class.java)
+  
+  init {
+    textField("Nome") {
+      isEnabled = false
+      addThemeVariants(LUMO_SMALL)
+      bind(binder).bind(SenhaUsuario::nome)
+    }
+    
+    passwordField("Senha") {
+      addThemeVariants(LUMO_SMALL)
+      bind(binder).bind(SenhaUsuario::senha)
     }
   }
 }

@@ -1,7 +1,7 @@
 package br.com.astrosoft.pedidoLink.view.main
 
 import br.com.astrosoft.framework.view.PainelGrid
-import br.com.astrosoft.framework.view.addColumnButtonClipBoard
+import br.com.astrosoft.framework.view.addColumnButton
 import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroGerarLink
 import br.com.astrosoft.pedidoLink.viewmodel.IPedidoLinkView
@@ -17,7 +17,9 @@ import java.time.LocalDate
 
 class PainelGridGerarLink(view: IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(view, blockUpdate) {
   override fun Grid<PedidoLink>.gridConfig() {
-    addColumnButtonClipBoard(VaadinIcon.ARROW_FORWARD, view::marcaLink, {noteClipBoard})
+    addColumnButton(VaadinIcon.ARROW_FORWARD, execButton = {
+      view.marcaUserLink(it)
+    })
     colLoja()
     colnumPedido()
     colDataPedido()

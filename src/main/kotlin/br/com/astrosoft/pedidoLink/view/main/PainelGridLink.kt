@@ -43,11 +43,6 @@ class PainelGridLink(view: IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid
     lateinit var edtVendedor: TextField
     
     override fun FilterBar.contentBlock() {
-      button("Desmarca Link") {
-        icon = VaadinIcon.CHECK_CIRCLE_O.create()
-        addThemeVariants(LUMO_SMALL)
-        onLeftClick {view.desmarcaPedidoLink()}
-      }
       edtPedido = edtPedido() {
         addValueChangeListener {blockUpdate()}
       }
