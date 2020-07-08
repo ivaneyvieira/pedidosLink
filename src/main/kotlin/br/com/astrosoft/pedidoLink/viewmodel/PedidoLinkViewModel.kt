@@ -1,9 +1,11 @@
 package br.com.astrosoft.pedidoLink.viewmodel
 
+import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.viewmodel.IView
 import br.com.astrosoft.framework.viewmodel.ViewModel
 import br.com.astrosoft.framework.viewmodel.fail
 import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
+import br.com.astrosoft.pedidoLink.model.beans.UserSaci
 import java.io.InputStream
 import java.time.LocalDate
 import java.time.LocalTime
@@ -16,6 +18,22 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
   private fun listPedido(): List<PedidoLink> {
     val filtro = view.filtroPedido
     return PedidoLink.listaPedido()
+      .filter {
+        (it.dataPedido == filtro.data() || filtro.data() == null)
+        && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
+        && (it.vendedor?.startsWith(filtro.vendedor()) == true
+            || it.empno?.toString() == filtro.vendedor()
+            || filtro.vendedor() == "")
+      }
+  }
+  
+  fun updateGridGerarLink() {
+    view.updateGridLink(listGerarLink())
+  }
+  
+  private fun listGerarLink(): List<PedidoLink> {
+    val filtro = view.filtroGerarLink
+    return PedidoLink.listaGerarLink()
       .filter {
         (it.dataPedido == filtro.data() || filtro.data() == null)
         && (it.numPedido == filtro.numPedido() || filtro.numPedido() == 0)
@@ -132,22 +150,23 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
     updateGridLink()
   }
   
-  fun marcaOutros() = exec {
+  fun marcaUserLink() = exec {
+    val userSaci = AppConfig.userSaci as UserSaci
     val itens =
       view.itensSelecionadoPendente()
         .ifEmpty {fail("Nenhum item selecionado")}
     itens.forEach {pedidoLink: PedidoLink ->
-      pedidoLink.marcaOutroProdido("S")
+      pedidoLink.marcaUserLink(userSaci.no)
     }
     updateGridPendente()
   }
   
-  fun desmarcaOutros() = exec {
+  fun desmarcaUserLink() = exec {
     val itens =
       view.itensSelecionadoPendente()
         .ifEmpty {fail("Nenhum item selecionado")}
     itens.forEach {pedidoLink: PedidoLink ->
-      pedidoLink.marcaOutroProdido("N")
+      pedidoLink.marcaUserLink(0)
     }
     updateGridPendente()
   }
@@ -158,6 +177,13 @@ interface IFiltroPedido {
   fun vendedor(): String;
   fun data(): LocalDate?
 }
+
+interface IFiltroGerarLink {
+  fun numPedido(): Int
+  fun vendedor(): String;
+  fun data(): LocalDate?
+}
+
 
 interface IFiltroLink {
   fun numPedido(): Int
@@ -188,6 +214,7 @@ interface IFiltroOutros {
 
 interface IPedidoLinkView: IView {
   fun updateGridPedido(itens: List<PedidoLink>)
+  fun updateGridGerarLink(itens: List<PedidoLink>)
   fun updateGridLink(itens: List<PedidoLink>)
   fun updateGridPendente(itens: List<PedidoLink>)
   fun updateGridFinalizar(itens: List<PedidoLink>)
@@ -200,6 +227,7 @@ interface IPedidoLinkView: IView {
   
   val filtroPedido: IFiltroPedido
   val filtroLink: IFiltroLink
+  val filtroGerarLink: IFiltroGerarLink
   val filtroPendente: IFiltroPendente
   val filtroFinalizar: IFiltroFinalizar
   val filtroFaturado: IFiltroFaturado
@@ -210,8 +238,8 @@ interface IPedidoLinkView: IView {
   fun desmarcaPedidoLink()
   fun marcaVendedor(pedidoLink: PedidoLink)
   fun desmarcaPedido()
-  fun marcaOutro()
-  fun desmarcaOutros()
+  fun marcaUserLink()
+  fun desmarcaUserLink()
   fun uploadFile(inputStream: InputStream)
 }
 

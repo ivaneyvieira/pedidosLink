@@ -35,7 +35,7 @@ data class PedidoLink(val loja: Int,
                       val confirmado: String,
                       val senhaVendedor: String,
                       val marca: String,
-                      val marcaOutros: String,
+                      val userLink: Int,
                       val parcelas: Int?,
                       val autorizadora: String?,
                       val autorizacao: String?,
@@ -68,9 +68,9 @@ data class PedidoLink(val loja: Int,
     saci.marcaVendedor(loja, numPedido, marcaNova)
   }
   
-  fun marcaOutroProdido(marcaNova: String) {
+  fun marcaUserLink(userLink: Int) {
     if(statusTefOutros.contains(statusTef))
-      saci.marcaOutros(loja, numPedido, marcaNova)
+      saci.marcaUserLink(loja, numPedido, userLink)
   }
   
   companion object {
@@ -106,8 +106,17 @@ data class PedidoLink(val loja: Int,
     }
     
     fun listaLink(): List<PedidoLink> {
+      val userSaci = AppConfig.userSaci as UserSaci
       return updateList().filter {
-        it.notaFiscal == "" && it.dataLink == null && statusValidosPedido.contains(it.status) && it.marca != ""
+        it.notaFiscal == "" && it.dataLink == null && statusValidosPedido.contains(it.status) && it.marca != "" &&
+        it.userLink == userSaci.no
+      }
+    }
+    
+    fun listaGerarLink(): List<PedidoLink> {
+      return updateList().filter {
+        it.notaFiscal == "" && it.dataLink == null && statusValidosPedido.contains(it.status) && it.marca != "" &&
+        it.userLink == 0
       }
     }
     

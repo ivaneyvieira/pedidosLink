@@ -2,6 +2,7 @@ package br.com.astrosoft.pedidoLink.model
 
 import br.com.astrosoft.framework.model.QueryDB
 import br.com.astrosoft.framework.util.DB
+import br.com.astrosoft.framework.util.toSaciDate
 import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
 import br.com.astrosoft.pedidoLink.model.beans.UserSaci
 import java.time.LocalDate
@@ -34,9 +35,10 @@ class QuerySaci: QueryDB(driver, url, username, password) {
   
   fun listaPedidoLink(storeno: Int): List<PedidoLink> {
     val sql = "/sqlSaci/pedidoLink.sql"
+    val data = LocalDate.now().minusDays(15).toSaciDate()
     return query(sql, PedidoLink::class) {
       addOptionalParameter("storeno", storeno)
-      addOptionalParameter("data", 20200608)
+      addOptionalParameter("data", data)
     }
   }
   
@@ -75,12 +77,12 @@ class QuerySaci: QueryDB(driver, url, username, password) {
     }
   }
   
-  fun marcaOutros(loja: Int, numPedido: Int, marcaNova: String) {
-    val sql = "/sqlSaci/marcaOutros.sql"
+  fun marcaUserLink(loja: Int, numPedido: Int, userLink: Int) {
+    val sql = "/sqlSaci/marcaUserLink.sql"
     script(sql) {
       addParameter("storeno", loja)
       addParameter("ordno", numPedido)
-      addParameter("marca", marcaNova)
+      addParameter("userLink", userLink)
     }
   }
   
