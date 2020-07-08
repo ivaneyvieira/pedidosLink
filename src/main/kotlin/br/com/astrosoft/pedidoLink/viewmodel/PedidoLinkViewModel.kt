@@ -140,7 +140,7 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
     updateGridPedido()
   }
   
-  fun desmarcaVendedor() {
+  fun desmarcaVendedor() = exec {
     val itens =
       view.itensSelecionadoLink()
         .ifEmpty {fail("Nenhum item selecionado")}
@@ -150,25 +150,25 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
     updateGridLink()
   }
   
-  fun marcaUserLink() = exec {
+  fun marcaUserLink(pedido: PedidoLink, senha: String) = exec {
     val userSaci = AppConfig.userSaci as UserSaci
-    val itens =
-      view.itensSelecionadoPendente()
-        .ifEmpty {fail("Nenhum item selecionado")}
-    itens.forEach {pedidoLink: PedidoLink ->
-      pedidoLink.marcaUserLink(userSaci.no)
-    }
-    updateGridPendente()
+    if(userSaci.senha == senha)
+      pedido.marcaUserLink(userSaci.no)
+    else
+      fail("Senha incorreta");
+    
+    updateGridGerarLink()
+    updateGridLink()
   }
   
   fun desmarcaUserLink() = exec {
     val itens =
-      view.itensSelecionadoPendente()
+      view.itensSelecionadoLink()
         .ifEmpty {fail("Nenhum item selecionado")}
     itens.forEach {pedidoLink: PedidoLink ->
       pedidoLink.marcaUserLink(0)
     }
-    updateGridPendente()
+    updateGridLink()
   }
 }
 
@@ -183,7 +183,6 @@ interface IFiltroGerarLink {
   fun vendedor(): String;
   fun data(): LocalDate?
 }
-
 
 interface IFiltroLink {
   fun numPedido(): Int
@@ -238,9 +237,11 @@ interface IPedidoLinkView: IView {
   fun desmarcaPedidoLink()
   fun marcaVendedor(pedidoLink: PedidoLink)
   fun desmarcaPedido()
-  fun marcaUserLink()
+  fun marcaUserLink(pedidoLink: PedidoLink)
   fun desmarcaUserLink()
   fun uploadFile(inputStream: InputStream)
 }
 
 data class SenhaVendendor(var nome: String, var senha: String?)
+
+data class SenhaUsuario(var nome: String, var senha: String?)

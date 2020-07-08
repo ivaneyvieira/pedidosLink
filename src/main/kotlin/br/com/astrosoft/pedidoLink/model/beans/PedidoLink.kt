@@ -41,7 +41,7 @@ data class PedidoLink(val loja: Int,
                       val autorizacao: String?,
                       val nsuHost: String?,
                       val dataTef: LocalDate?,
-                      val statusTef: String?) {
+                      val statusTef: String) {
   val notaFiscal: String
     get() = numeroNota(nfnoNota, nfseNota)
   val statusPedido
@@ -87,6 +87,7 @@ data class PedidoLink(val loja: Int,
     
     @Synchronized
     fun updateList(): List<PedidoLink> {
+      /*
       val timeNow = LocalTime.now()
       val duration = Duration.between(time, timeNow).seconds
       
@@ -97,6 +98,8 @@ data class PedidoLink(val loja: Int,
         time = LocalTime.now()
       }
       return list
+      */
+      return saci.listaPedidoLink(storeno);
     }
     
     fun listaPedido(): List<PedidoLink> {
@@ -109,7 +112,7 @@ data class PedidoLink(val loja: Int,
       val userSaci = AppConfig.userSaci as UserSaci
       return updateList().filter {
         it.notaFiscal == "" && it.dataLink == null && statusValidosPedido.contains(it.status) && it.marca != "" &&
-        it.userLink == userSaci.no
+        (it.userLink == userSaci.no || (userSaci.admin && it.userLink != 0))
       }
     }
     
@@ -122,7 +125,7 @@ data class PedidoLink(val loja: Int,
     
     fun listaPendente(): List<PedidoLink> {
       return updateList().filter {
-        it.dataLink != null && it.notaFiscal == "" && it.confirmado == "N"
+        it.dataLink != null && it.notaFiscal == "" && it.confirmado == "N" && it.statusTef in listOf("AGU", "")
       }
     }
     
