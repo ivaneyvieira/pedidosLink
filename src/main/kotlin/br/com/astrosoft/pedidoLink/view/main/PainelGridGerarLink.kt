@@ -4,7 +4,6 @@ import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.framework.view.addColumnButtonClipBoard
 import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroGerarLink
-import br.com.astrosoft.pedidoLink.viewmodel.IFiltroLink
 import br.com.astrosoft.pedidoLink.viewmodel.IPedidoLinkView
 import com.github.mvysny.karibudsl.v10.button
 import com.github.mvysny.karibudsl.v10.onLeftClick
@@ -16,7 +15,7 @@ import com.vaadin.flow.component.textfield.IntegerField
 import com.vaadin.flow.component.textfield.TextField
 import java.time.LocalDate
 
-class PainelGridLink(view: IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(view, blockUpdate) {
+class PainelGridGerarLink(view: IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(view, blockUpdate) {
   override fun Grid<PedidoLink>.gridConfig() {
     addColumnButtonClipBoard(VaadinIcon.ARROW_FORWARD, view::marcaLink, {noteClipBoard})
     colLoja()
@@ -37,7 +36,7 @@ class PainelGridLink(view: IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid
   
   override fun filterBar() = FilterBarPedido()
   
-  inner class FilterBarPedido: FilterBar(), IFiltroLink {
+  inner class FilterBarPedido: FilterBar(), IFiltroGerarLink {
     lateinit var edtPedido: IntegerField
     lateinit var edtData: DatePicker
     lateinit var edtVendedor: TextField
