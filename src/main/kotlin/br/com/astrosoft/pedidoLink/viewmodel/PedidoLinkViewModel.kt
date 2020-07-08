@@ -142,12 +142,12 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
   
   fun desmarcaVendedor() = exec {
     val itens =
-      view.itensSelecionadoLink()
+      view.itensSelecionadoGerarLink()
         .ifEmpty {fail("Nenhum item selecionado")}
     itens.forEach {pedidoLink: PedidoLink ->
       pedidoLink.marcaVendedor("")
     }
-    updateGridLink()
+    updateGridGerarLink()
   }
   
   fun marcaUserLink(pedido: PedidoLink, senha: String) = exec {
@@ -221,6 +221,7 @@ interface IPedidoLinkView: IView {
   fun updateGridOutros(itens: List<PedidoLink>)
   
   fun itensSelecionadoPedido(): List<PedidoLink>
+  fun itensSelecionadoGerarLink(): List<PedidoLink>
   fun itensSelecionadoLink(): List<PedidoLink>
   fun itensSelecionadoPendente(): List<PedidoLink>
   

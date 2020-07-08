@@ -112,6 +112,10 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
     return gridPedido.selectedItems()
   }
   
+  override fun itensSelecionadoGerarLink(): List<PedidoLink> {
+    return gridGerarLink.selectedItems()
+  }
+
   override fun itensSelecionadoLink(): List<PedidoLink> {
     return gridLink.selectedItems()
   }
