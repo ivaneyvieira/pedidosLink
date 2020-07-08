@@ -108,18 +108,18 @@ data class PedidoLink(val loja: Int,
       }
     }
     
+    fun listaGerarLink(): List<PedidoLink> {
+      return updateList().filter {
+        it.notaFiscal == "" && it.dataLink == null && statusValidosPedido.contains(it.status) && it.marca != "" &&
+        it.userLink == 0
+      }
+    }
+    
     fun listaLink(): List<PedidoLink> {
       val userSaci = AppConfig.userSaci as UserSaci
       return updateList().filter {
         it.notaFiscal == "" && it.dataLink == null && statusValidosPedido.contains(it.status) && it.marca != "" &&
         (it.userLink == userSaci.no || (userSaci.admin && it.userLink != 0))
-      }
-    }
-    
-    fun listaGerarLink(): List<PedidoLink> {
-      return updateList().filter {
-        it.notaFiscal == "" && it.dataLink == null && statusValidosPedido.contains(it.status) && it.marca != "" &&
-        it.userLink == 0
       }
     }
     

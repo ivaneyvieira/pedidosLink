@@ -58,7 +58,7 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
     }
     when {
       user.acl_pedido    -> viewModel.updateGridPedido()
-      user.acl_link      -> viewModel.updateGridLink()
+      user.acl_link      -> viewModel.updateGridGerarLink()
       user.acl_pendente  -> viewModel.updateGridPendente()
       user.acl_finalizar -> viewModel.updateGridFinalizar()
       user.acl_faturado  -> viewModel.updateGridFaturado()

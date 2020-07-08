@@ -28,7 +28,7 @@ class PedidoLinkViewModel(view: IPedidoLinkView): ViewModel<IPedidoLinkView>(vie
   }
   
   fun updateGridGerarLink() {
-    view.updateGridLink(listGerarLink())
+    view.updateGridGerarLink(listGerarLink())
   }
   
   private fun listGerarLink(): List<PedidoLink> {
