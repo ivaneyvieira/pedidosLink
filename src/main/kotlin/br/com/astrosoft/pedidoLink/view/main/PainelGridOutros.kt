@@ -26,6 +26,7 @@ class PainelGridOutros(view : IPedidoLinkView, blockUpdate: () -> Unit): PainelG
     colMetodo()
     colCartao()
     colStatusTef()
+    colUserLink()
     colWhatsapp()
     colVendedor()
     colEmpno()

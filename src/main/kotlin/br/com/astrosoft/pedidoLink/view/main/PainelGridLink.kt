@@ -1,8 +1,10 @@
 package br.com.astrosoft.pedidoLink.view.main
 
+import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.framework.view.addColumnButtonClipBoard
 import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
+import br.com.astrosoft.pedidoLink.model.beans.UserSaci
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroGerarLink
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroLink
 import br.com.astrosoft.pedidoLink.viewmodel.IPedidoLinkView
@@ -28,6 +30,7 @@ class PainelGridLink(view: IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid
     colMetodo()
     colCartao()
     colStatusTef()
+    colUserLink()
     colWhatsapp()
     colEmpno()
     colVendedor()
@@ -43,6 +46,13 @@ class PainelGridLink(view: IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid
     lateinit var edtVendedor: TextField
     
     override fun FilterBar.contentBlock() {
+      val userSaci = AppConfig.userSaci as UserSaci
+      button("Desmarca Link") {
+        isVisible = userSaci.admin
+        icon = VaadinIcon.CHECK_CIRCLE_O.create()
+        addThemeVariants(LUMO_SMALL)
+        onLeftClick {view.desmarcaUserLink()}
+      }
       edtPedido = edtPedido() {
         addValueChangeListener {blockUpdate()}
       }

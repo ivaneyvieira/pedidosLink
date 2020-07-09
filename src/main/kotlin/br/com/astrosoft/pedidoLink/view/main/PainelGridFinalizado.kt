@@ -19,6 +19,7 @@ class PainelGridFinalizado(view: IPedidoLinkView, blockUpdate: () -> Unit): Pain
     colValorLink()
     colMetodo()
     colStatusTef()
+    colUserLink()
     colCartao()
     colAutorizadora()
     colParcelas()
