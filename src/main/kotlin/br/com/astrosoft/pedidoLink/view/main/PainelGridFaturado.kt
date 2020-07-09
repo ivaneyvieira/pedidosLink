@@ -22,6 +22,7 @@ class PainelGridFaturado(view : IPedidoLinkView, blockUpdate: () -> Unit): Paine
     colValorLink()
     colMetodo()
     colStatusTef()
+    colUserLink()
     colCartao()
     colAutorizadora()
     colParcelas()

@@ -1,8 +1,10 @@
 package br.com.astrosoft.pedidoLink.view.main
 
+import br.com.astrosoft.AppConfig
 import br.com.astrosoft.framework.view.PainelGrid
 import br.com.astrosoft.framework.view.addColumnButton
 import br.com.astrosoft.pedidoLink.model.beans.PedidoLink
+import br.com.astrosoft.pedidoLink.model.beans.UserSaci
 import br.com.astrosoft.pedidoLink.viewmodel.IFiltroGerarLink
 import br.com.astrosoft.pedidoLink.viewmodel.IPedidoLinkView
 import com.github.mvysny.karibudsl.v10.button
@@ -44,7 +46,9 @@ class PainelGridGerarLink(view: IPedidoLinkView, blockUpdate: () -> Unit): Paine
     lateinit var edtVendedor: TextField
     
     override fun FilterBar.contentBlock() {
+      val userSaci = AppConfig.userSaci as UserSaci
       button("Desmarca Link") {
+        isVisible = userSaci.admin
         icon = VaadinIcon.CHECK_CIRCLE_O.create()
         addThemeVariants(LUMO_SMALL)
         onLeftClick {view.desmarcaPedidoLink()}

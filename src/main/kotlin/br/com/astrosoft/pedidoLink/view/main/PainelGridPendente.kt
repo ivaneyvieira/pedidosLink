@@ -33,6 +33,7 @@ class PainelGridPendente(view : IPedidoLinkView, blockUpdate: () -> Unit): Paine
     colMetodo()
     colCartao()
     colStatusTef()
+    colUserLink()
     colWhatsapp()
     colVendedor()
     colEmpno()

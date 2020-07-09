@@ -191,6 +191,7 @@ class FormVendedor: FormLayout() {
     passwordField("Senha") {
       addThemeVariants(LUMO_SMALL)
       bind(binder).bind(SenhaVendendor::senha)
+      this.isAutofocus = true
     }
   }
 }
@@ -208,6 +209,7 @@ class FormUsuario: FormLayout() {
     passwordField("Senha") {
       addThemeVariants(LUMO_SMALL)
       bind(binder).bind(SenhaUsuario::senha)
+      this.isAutofocus = true
     }
   }
 }
