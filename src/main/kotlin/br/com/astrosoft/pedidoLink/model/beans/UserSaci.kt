@@ -77,7 +77,7 @@ class UserSaci: IUser {
     private val BIT_PENDENTE = 2.pow(2)
     private val BIT_FINALIZAR = 2.pow(3)
     private val BIT_FATURADO = 2.pow(4)
-    private val BIT_OUTROS = 2.pow(4)
+    private val BIT_OUTROS = 2.pow(5)
     
     fun findAll(): List<UserSaci>? {
       return saci.findAllUser()
