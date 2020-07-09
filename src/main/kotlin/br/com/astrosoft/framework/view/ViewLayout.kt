@@ -29,6 +29,7 @@ import com.vaadin.flow.component.grid.ColumnTextAlign.CENTER
 import com.vaadin.flow.component.grid.ColumnTextAlign.END
 import com.vaadin.flow.component.grid.ColumnTextAlign.START
 import com.vaadin.flow.component.grid.Grid
+import com.vaadin.flow.component.icon.Icon
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
@@ -276,9 +277,8 @@ fun <T> (@VaadinDsl Grid<T>).addColumnButton(iconButton: VaadinIcon,
                                              execButton: (T) -> Unit = {},
                                              block: (@VaadinDsl Grid.Column<T>).() -> Unit = {}): Grid.Column<T> {
   return addComponentColumn {bean ->
-    Button().apply {
-      icon = iconButton.create()
-      addThemeVariants(LUMO_SMALL)
+    Icon(iconButton).apply {
+      this.style.set("cursor", "pointer");
       onLeftClick {
         execButton(bean)
       }
@@ -295,14 +295,11 @@ fun <T> (@VaadinDsl Grid<T>).addColumnButtonClipBoard(iconButton: VaadinIcon,
                                                       textToClipBoard: T.() -> String,
                                                       block: (@VaadinDsl Grid.Column<T>).() -> Unit = {}): Grid.Column<T> {
   return addComponentColumn {bean ->
-    val button = Button().apply {
-      icon = iconButton.create()
-      addThemeVariants(LUMO_SMALL)
-      onLeftClick {
-        execButton(bean)
-      }
+    val icon = iconButton.create()
+    icon.onLeftClick {
+      execButton(bean)
     }
-    ClipboardHelper(textToClipBoard(bean), button)
+    ClipboardHelper(textToClipBoard(bean), icon)
   }.apply {
     this.width = "4em"
     this.center()
