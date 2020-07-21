@@ -55,10 +55,9 @@ GROUP BY eord.storeno, eord.ordno;
 
 DROP TABLE IF EXISTS sqldados.TTEF;
 CREATE TEMPORARY TABLE sqldados.TTEF (
-  PRIMARY KEY (storeno, ordno)
+  PRIMARY KEY (ordno)
 )
 SELECT MID(PEDIDO, 1, 2)                                   AS loja,
-       S.no                                                AS storeno,
        MID(PEDIDO, 4, 100) * 1                             AS ordno,
        PEDIDO                                              AS PEDIDO,
        SUM(VALOR / 100)                                    AS VALOR,
@@ -72,11 +71,8 @@ SELECT MID(PEDIDO, 1, 2)                                   AS loja,
        cast(CONCAT(MID(DATACRIACAO, 7, 4), MID(DATACRIACAO, 4, 2), MID(DATACRIACAO, 1, 2)) *
 	    1 AS DATE)                                     AS DATACRIACAO
 FROM sqldados.engecopi_tef_bruto AS B
-  INNER JOIN sqldados.store      AS S
-	       ON S.sname = MID(PEDIDO, 1, 2)
 WHERE nsu > date_format(:data, '%y%m%d') * 1000000000
-  AND (S.no = :storeno OR :storeno = 0)
-GROUP BY PEDIDO;
+GROUP BY ordno;
 
 SELECT P.storeno                                                AS loja,
        P.ordno                                                  AS numPedido,
@@ -113,7 +109,7 @@ SELECT P.storeno                                                AS loja,
        coalesce(statusCon, statusOut, '')                       AS statusTef
 FROM sqldados.eord          AS P
   LEFT JOIN  sqldados.TTEF  AS T
-	       USING (storeno, ordno)
+	       USING (ordno)
   INNER JOIN sqldados.custp AS C
 	       ON C.no = P.custno
   LEFT JOIN  sqldados.nf    AS N
