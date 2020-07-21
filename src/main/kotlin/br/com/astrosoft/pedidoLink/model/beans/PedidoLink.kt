@@ -72,9 +72,9 @@ data class PedidoLink(val loja: Int,
   }
   
   companion object {
-    private val storeno: Int by lazy {
-      UserSaci.findUser(AppConfig.userSaci?.login)?.storeno ?: 0
-    }
+    private val storeno
+      get()= (AppConfig.userSaci as? UserSaci)?.storeno ?: 0
+    
     private val statusValidosPedido = listOf(1, 2, 8)
     private val statusTefOutros = listOf("NOV", "NEG", "INV", "EST", "EXP", "ABA", "CAN")
     private val statusTefConfirmado = listOf("CON")
