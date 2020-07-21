@@ -19,6 +19,7 @@ import com.vaadin.flow.component.upload.Upload
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer
 import java.time.LocalDate
 
+
 class PainelGridPendente(view : IPedidoLinkView, blockUpdate: () -> Unit): PainelGrid<PedidoLink>(view, blockUpdate) {
   override fun Grid<PedidoLink>.gridConfig() {
     //setSelectionMode(MULTI)
@@ -53,13 +54,6 @@ class PainelGridPendente(view : IPedidoLinkView, blockUpdate: () -> Unit): Paine
         addThemeVariants(LUMO_SMALL)
         onLeftClick {view.desmarcaPedido()}
       }
-      /*
-      button("Outros status") {
-        icon = VaadinIcon.CLOSE_SMALL.create()
-        addThemeVariants(LUMO_SMALL)
-        onLeftClick {view.marcaOutro()}
-      }
-       */
       edtPedido = edtPedido() {
         addValueChangeListener {blockUpdate()}
       }
