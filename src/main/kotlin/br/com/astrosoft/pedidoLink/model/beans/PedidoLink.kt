@@ -112,7 +112,7 @@ data class PedidoLink(val loja: Int,
     }
     
     fun listaPendente(): List<PedidoLink> {
-      return updateList(storeno).filter {
+      return updateList(0).filter {
         it.dataLink != null && it.notaFiscal == "" && it.confirmado == "N" && it.statusTef in listOf("AGU", "")
       }
     }
