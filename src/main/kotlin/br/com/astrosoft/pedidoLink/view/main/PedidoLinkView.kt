@@ -38,7 +38,7 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
   private val gridGerarLink = PainelGridGerarLink(this) {viewModel.updateGridGerarLink()}
   private val gridPendente = PainelGridPendente(this) {viewModel.updateGridPendente()}
   private val gridFinalizar = PainelGridFinalizado(this) {viewModel.updateGridFinalizar()}
-  private val gridFaturar = PainelGridFaturado(this) {viewModel.updateGridFaturado()}
+  private val gridFaturado = PainelGridFaturado(this) {viewModel.updateGridFaturado()}
   private val gridOutros = PainelGridOutros(this) {viewModel.updateGridOutros()}
   override val viewModel: PedidoLinkViewModel = PedidoLinkViewModel(this)
   
@@ -53,7 +53,7 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
       if(user.acl_link) tabGrid(TAB_LINK, gridLink)
       if(user.acl_pendente) tabGrid(TAB_PENDENTE, gridPendente)
       if(user.acl_finalizar) tabGrid(TAB_FINALIZAR, gridFinalizar)
-      if(user.acl_faturado) tabGrid(TAB_FATURADO, gridFaturar)
+      if(user.acl_faturado) tabGrid(TAB_FATURADO, gridFaturado)
       if(user.acl_outros) tabGrid(TAB_OUTROS, gridOutros)
     }
     when {
@@ -145,7 +145,7 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
   }
   
   override fun updateGridFaturado(itens: List<PedidoLink>) {
-    gridFaturar.updateGrid(itens)
+    gridFaturado.updateGrid(itens)
   }
   
   override fun updateGridOutros(itens: List<PedidoLink>) {
@@ -163,7 +163,7 @@ class PedidoLinkView: ViewLayout<PedidoLinkViewModel>(), IPedidoLinkView {
   override val filtroFinalizar: IFiltroFinalizar
     get() = gridFinalizar.filterBar as IFiltroFinalizar
   override val filtroFaturado: IFiltroFaturado
-    get() = gridFaturar.filterBar as IFiltroFaturado
+    get() = gridFaturado.filterBar as IFiltroFaturado
   override val filtroOutros: IFiltroOutros
     get() = gridOutros.filterBar as IFiltroOutros
   
