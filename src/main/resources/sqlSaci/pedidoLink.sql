@@ -24,7 +24,7 @@ SELECT 'Link de pagamento loja ENGECOPI Ped MF'                                 
        CONCAT(eord.nfno_futura, '/', eord.nfse_futura)                                  AS NF_Fat,
        eord.amount                                                                      AS valor,
        IF(eord.other = 0, MID(eordrk.remarks__480, 7, 10), eord.other) / 100            AS frete,
-       MID(eordrk.remarks__480, 160, 10)                                                AS CARTAO,
+       UPPER(TRIM(MID(eordrk.remarks__480, 160, 10)))                                   AS CARTAO,
        (eord.amount + IF(eord.other = 0, (MID(eordrk.remarks__480, 7, 2) * 100), eord.other)) /
        100                                                                              AS total,
        CONCAT(paym.no, '-', paym.sname)                                                 AS MET,

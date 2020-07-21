@@ -78,6 +78,7 @@ data class PedidoLink(val loja: Int,
     private val statusValidosPedido = listOf(1, 2, 8)
     private val statusTefOutros = listOf("NOV", "NEG", "INV", "EST", "EXP", "ABA", "CAN")
     private val statusTefConfirmado = listOf("CON")
+    private val cartoesFiltro = listOf("VISA", "ELO", "MASTER", "HIPER", "DINER", "AMEX")
     private val list = mutableListOf<PedidoLink>().apply {
       addAll(saci.listaPedidoLink(storeno))
     }
@@ -85,24 +86,13 @@ data class PedidoLink(val loja: Int,
     
     @Synchronized
     fun updateList(): List<PedidoLink> {
-      /*
-      val timeNow = LocalTime.now()
-      val duration = Duration.between(time, timeNow).seconds
-      
-      if(duration >= 10) {
-        val newList = saci.listaPedidoLink(storeno)
-        list.clear()
-        list.addAll(newList)
-        time = LocalTime.now()
-      }
-      return list
-      */
       return saci.listaPedidoLink(storeno);
     }
     
     fun listaPedido(): List<PedidoLink> {
       return updateList().filter {
-        it.notaFiscal == "" && it.dataLink == null && statusValidosPedido.contains(it.status) && it.marca == ""
+        it.notaFiscal == "" && it.dataLink == null && statusValidosPedido.contains(it.status)
+        && it.marca == "" && it.cartao in cartoesFiltro
       }
     }
     
