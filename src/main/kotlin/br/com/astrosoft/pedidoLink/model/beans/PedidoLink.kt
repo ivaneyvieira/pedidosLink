@@ -85,19 +85,19 @@ data class PedidoLink(val loja: Int,
     private var time = LocalTime.now()
     
     @Synchronized
-    fun updateList(): List<PedidoLink> {
-      return saci.listaPedidoLink(storeno);
+    private fun updateList(loja : Int): List<PedidoLink> {
+      return saci.listaPedidoLink(loja);
     }
     
     fun listaPedido(): List<PedidoLink> {
-      return updateList().filter {
+      return updateList(storeno).filter {
         it.notaFiscal == "" && it.dataLink == null && statusValidosPedido.contains(it.status)
         && it.marca == "" && it.cartao in cartoesFiltro
       }
     }
     
     fun listaGerarLink(): List<PedidoLink> {
-      return updateList().filter {
+      return updateList(0).filter {
         it.notaFiscal == "" && it.dataLink == null && statusValidosPedido.contains(it.status) && it.marca != "" &&
         it.userLink == 0
       }
@@ -105,33 +105,33 @@ data class PedidoLink(val loja: Int,
     
     fun listaLink(): List<PedidoLink> {
       val userSaci = AppConfig.userSaci as UserSaci
-      return updateList().filter {
+      return updateList(0).filter {
         it.notaFiscal == "" && it.dataLink == null && statusValidosPedido.contains(it.status) && it.marca != "" &&
         (it.userLink == userSaci.no || (userSaci.admin && it.userLink != 0))
       }
     }
     
     fun listaPendente(): List<PedidoLink> {
-      return updateList().filter {
+      return updateList(storeno).filter {
         it.dataLink != null && it.notaFiscal == "" && it.confirmado == "N" && it.statusTef in listOf("AGU", "")
       }
     }
     
     fun listaFinalizar(): List<PedidoLink> {
-      return updateList().filter {
+      return updateList(storeno).filter {
         it.dataLink != null && it.notaFiscal == "" && it.confirmado == "S"
         && it.statusTef in statusTefConfirmado
       }
     }
     
     fun listaFaturado(): List<PedidoLink> {
-      return updateList().filter {
+      return updateList(storeno).filter {
         it.notaFiscal != ""
       }
     }
     
     fun listaOutros(): List<PedidoLink> {
-      return updateList().filter {
+      return updateList(storeno).filter {
         it.statusTef in statusTefOutros;
       }
     }
